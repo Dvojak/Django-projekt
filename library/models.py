@@ -135,4 +135,20 @@ class DeskovkaTvurce(models.Model):
 
     def __str__(self):
         return f'{self.deskovka.jmeno} - {self.tvurce.Jmeno} {self.tvurce.Prijmeni}'
+    
+
+class Hodnoceni(models.Model):
+    Hra = models.ForeignKey(Deskovka, on_delete=models.CASCADE, related_name='hodnoceni')
+    uzivatel = models.ForeignKey(User, on_delete=models.CASCADE, related_name='hodnoceni')
+    hodnoceni = models.IntegerField(verbose_name='Hodnocení', help_text='Zadejte hodnocení', validators=[MinValueValidator(0), MaxValueValidator(10)])
+    datum = models.DateField(auto_now_add=True, verbose_name='Datum hodnocení')
+    recenze = models.TextField(verbose_name='Recenze', help_text='Zadejte recenzi')
+
+    class Meta:
+        verbose_name = 'Hodnocení'
+        verbose_name_plural = 'Hodnocení'
+
+    def __str__(self):
+        return f'{self.Hra.jmeno} - {self.uzivatel.username} - {self.hodnoceni}'
+    
 
