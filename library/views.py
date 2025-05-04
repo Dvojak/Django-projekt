@@ -4,7 +4,8 @@ from .forms import UserRegistrationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import  AuthenticationForm
 
-
+def index(request):
+    return render(request, 'users/index.html')
 
 
 def register(request):

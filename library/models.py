@@ -7,14 +7,12 @@ from django.db import models
 
 class Deskovka(models.Model):
     nazev = models.CharField(max_length=80, verbose_name="Jméno deskové hry", help_text="Zadejte jméno deskové hry",
-            error_messages={'blank':'Jméno deskové hry musí být vyplněno'}),
-    alt = models.CharField(max_length=80, verbose_name="Alternativní jméno deskové hry", help_text="Zadejte alternativní jméno deskové hry"),
+            error_messages={'blank':'Jméno deskové hry musí být vyplněno'})
+    alt = models.CharField(max_length=80, verbose_name="Alternativní jméno deskové hry", help_text="Zadejte alternativní jméno deskové hry",default='')
     vydani = models.DateField(blank=True,null=True, verbose_name='Datum narození')
-    minvek = models.IntegerField(verbose_name='Minimální věk', help_text='Zadejte minimální věk', validators=[MinValueValidator(0), MaxValueValidator(99)])
-    cas = models.IntegerField(verbose_name='Délka hry', help_text='Zadejte délku hry v minutách', validators=[MinValueValidator(0), MaxValueValidator(999)])
-    pocet_hrac = models.IntegerField(verbose_name='Počet hráčů', help_text='Zadejte počet hráčů', validators=[MinValueValidator(1), MaxValueValidator(99)])
-    HODNOCENI = [(0, ''), (1, '*'), (2, '**'), (3, '***'), (4, '****'), (5, '*****'), ]
-    hodnoceni = models.PositiveIntegerField(choices=HODNOCENI, verbose_name="Průměrové hodnoceni", default=3)
+    minvek = models.IntegerField(verbose_name='Minimální věk', help_text='Zadejte minimální věk', validators=[MinValueValidator(0), MaxValueValidator(99)],default=0)
+    cas = models.IntegerField(verbose_name='Délka hry', help_text='Zadejte délku hry v minutách', validators=[MinValueValidator(0), MaxValueValidator(999)], default=0)
+    pocet_hrac = models.IntegerField(verbose_name='Počet hráčů', help_text='Zadejte počet hráčů', validators=[MinValueValidator(1), MaxValueValidator(99)],default=1)
     KOMPLEXITA = [(0, ''), (1, '*'), (2, '**'), (3, '***'), (4, '****'), (5, '*****'), ]
     komplexita = models.PositiveIntegerField(choices=KOMPLEXITA, verbose_name="Komplexita hry", default=3)
     fotografie = models.ImageField(upload_to='deskovky',verbose_name='Fotografie',blank=True,null=True)
@@ -25,7 +23,7 @@ class Deskovka(models.Model):
         verbose_name_plural = 'Deskovky'
 
     def __str__(self):
-        return f'{self.jmeno},{self.alt}'
+        return f'{self.nazev},{self.alt}'
 
 
 
@@ -50,7 +48,7 @@ class DeskovkaZanr(models.Model):
         verbose_name_plural = 'Žánry deskovek'
 
     def __str__(self):
-        return f'{self.deskovka.jmeno} - {self.zanr.nazev}'
+        return f'{self.deskovka.nazev} - {self.zanr.nazev}'
     
 
 class Rozsireni(models.Model):
@@ -87,11 +85,11 @@ class DeskovkaVydavatelstvi(models.Model):
         verbose_name_plural = 'Vydavatelství deskovek'
 
     def __str__(self):
-        return f'{self.deskovka.jmeno} - {self.vydavatelstvi.Jmeno}'
+        return f'{self.deskovka.nazev} - {self.vydavatelstvi.Jmeno}'
 
 
 
-class tvurci():
+class tvurci(models.Model):
     Jmeno = models.CharField(max_length=80, verbose_name='Jméno tvůrce', help_text='Zadejte jméno tvůrce')
     Prijmeni = models.CharField(max_length=80, verbose_name='Příjmení tvůrce', help_text='Zadejte příjmení tvůrce')
     zivotopis = models.TextField(verbose_name='Životopis', help_text='Zadejte životopis tvůrce')
@@ -103,7 +101,7 @@ class tvurci():
     def __str__(self):
         return f'{self.Jmeno} {self.Prijmeni}'
     
-class role():
+class role(models.Model):
     nazev = models.CharField(max_length=80, verbose_name='Název role', help_text='Zadejte název role')
 
     class Meta:
@@ -113,7 +111,7 @@ class role():
     def __str__(self):
         return f'{self.nazev}'
 
-class TvurceRole():
+class TvurceRole(models.Model):
     tvurce = models.ForeignKey(tvurci, on_delete=models.CASCADE, related_name='tvurce_role')
     role = models.ForeignKey(role, on_delete=models.CASCADE, related_name='role_tvurce')
 
@@ -138,7 +136,7 @@ class DeskovkaTvurce(models.Model):
     
 
 class Hodnoceni(models.Model):
-    Hra = models.ForeignKey(Deskovka, on_delete=models.CASCADE, related_name='hodnoceni')
+    Hra = models.ForeignKey('Deskovka', on_delete=models.CASCADE, related_name='hodnoceni_set')
     uzivatel = models.ForeignKey(User, on_delete=models.CASCADE, related_name='hodnoceni')
     hodnoceni = models.IntegerField(verbose_name='Hodnocení', help_text='Zadejte hodnocení', validators=[MinValueValidator(0), MaxValueValidator(10)])
     datum = models.DateField(auto_now_add=True, verbose_name='Datum hodnocení')
