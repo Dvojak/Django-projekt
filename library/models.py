@@ -11,6 +11,10 @@ class Deskovka(models.Model):
     alt = models.CharField(max_length=80, verbose_name="Alternativní jméno deskové hry", help_text="Zadejte alternativní jméno deskové hry"),
     vydani = models.DateField(blank=True,null=True, verbose_name='Datum narození')
     fotografie = models.ImageField(upload_to='deskovky',verbose_name='Fotografie',blank=True,null=True)
+    HODNOCENI = [(0, ''), (1, '*'), (2, '**'), (3, '***'), (4, '****'), (5, '*****'), ]
+    hodnoceni = models.PositiveIntegerField(choices=HODNOCENI, verbose_name="Průměrové hodnoceni", default=3)
+    KOMPLEXITA = [(0, ''), (1, '*'), (2, '**'), (3, '***'), (4, '****'), (5, '*****'), ]
+    komplexita = models.PositiveIntegerField(choices=KOMPLEXITA, verbose_name="Komplexita hry", default=3)
 
     class Meta:
         verbose_name = 'Deskovka'
@@ -32,10 +36,3 @@ class Zanr(models.Model):
     def __str__(self):
         return f'{self.nazev}'
 
-
-class Prehled(models.Model):
-    nazev = models.ForeignKey(Deskovka, on_delete=models.CASCADE,verbose_name="Jméno deskové hry")
-    HODNOCENI = [(0, ''), (1, '*'), (2, '**'), (3, '***'), (4, '****'), (5, '*****'), ]
-    hodnoceni = models.PositiveIntegerField(choices=HODNOCENI, verbose_name="Průměrové hodnoceni", default=3)
-    KOMPLEXITA = [(0, ''), (1, '*'), (2, '**'), (3, '***'), (4, '****'), (5, '*****'), ]
-    komplexita = models.PositiveIntegerField(choices=KOMPLEXITA, verbose_name="Komplexita hry", default=3)
