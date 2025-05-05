@@ -1,11 +1,17 @@
 from django.shortcuts import render,redirect
 from .models import Deskovka, Zanr, Rozsireni
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm, BoardModelForms
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import  AuthenticationForm
 
 def index(request):
     return render(request, 'users/index.html')
+
+class DeskovkaListView(ListView):
+    model = Deskovka
+    form_class = BoardModelForm
+    template_name = 'templates/games/boardgames_list.html'
+
 
 
 def register(request):
