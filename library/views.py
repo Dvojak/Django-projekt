@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Deskovka, Zanr, Rozsireni
-from .forms import UserRegistrationForm, BoardModelForms
+from .forms import UserRegistrationForm, BoardModelForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import  AuthenticationForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -9,13 +9,42 @@ from django.urls import reverse_lazy
 def index(request):
     return render(request, 'users/index.html')
 
-class DeskovkaListView(ListView):
+class DeskovkaCreationView(CreateView):
     model = Deskovka
-    form_class = BoardModelForms
+    form_class = BoardModelForm
     template_name = 'templates/games/boardgames_list.html'
 
+    def get_success_url(self):
+        return reverse_lazy('deskovka_detail', kwargs={'pk': self.object.pk})
 
 
+class DeskovkaListView(ListView):
+    model = Deskovka
+    template_name = 'templates/games/boardgames_list.html'
+    queryset = Deskovka.objects.order_by('nazev')
+    context_object_name = 'deskovky'
+
+class DeskovkaDetailView(DetailView):
+    model = Deskovka
+    template_name = 'templates/games/boardgames_detail.html'
+    context_object_name = 'deskovka'
+
+class DeskovkaUpdateView(UpdateView):
+    model = Deskovka
+    form_class = BoardModelForm
+    template_name = 'templates/games/boardgames_update.html'
+
+    def get_success_url(self):
+        return reverse_lazy('deskovka_detail', kwargs={'pk': self.object.pk})
+
+
+class DeskovkaDeleteView(DeleteView):
+    model = Deskovka
+    template_name = 'templates/games/boardgames_delete.html'
+    context_object_name = 'deskovka'
+    success_url = reverse_lazy('deskovka_list')
+    
+                
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
