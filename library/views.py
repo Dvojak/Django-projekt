@@ -3,13 +3,15 @@ from .models import Deskovka, Zanr, Rozsireni
 from .forms import UserRegistrationForm, BoardModelForms
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import  AuthenticationForm
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 def index(request):
     return render(request, 'users/index.html')
 
 class DeskovkaListView(ListView):
     model = Deskovka
-    form_class = BoardModelForm
+    form_class = BoardModelForms
     template_name = 'templates/games/boardgames_list.html'
 
 
