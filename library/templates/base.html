@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Databáze deskových her{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <header>
+        <h1><a href="{% url 'index' %}">Deskovky</a></h1>
+        {% if user.is_authenticated %}
+            <p>Přihlášen: {{ user.username }} | <a href="{% url 'logout' %}">Odhlásit</a></p>
+        {% else %}
+            <a href="{% url 'login' %}">Přihlásit</a> |
+            <a href="{% url 'register' %}">Registrovat</a>
+        {% endif %}
+        <hr>
+        <a href="{% url 'deskovka_list'%}">Deskovky</a>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <hr>
+        <p>&copy; {{ year }} Deskovky App</p>
+    </footer>
+</body>
+</html>

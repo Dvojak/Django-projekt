@@ -6,10 +6,10 @@ from django.db import models
 
 
 class Deskovka(models.Model):
-    nazev = models.CharField(max_length=80, verbose_name="Jméno deskové hry", help_text="Zadejte jméno deskové hry",
+    nazev = models.CharField(max_length=80, verbose_name="Jméno deskové hry", help_text="Zadejte jméno deskové hry", default='',
             error_messages={'blank':'Jméno deskové hry musí být vyplněno'})
     alt = models.CharField(max_length=80, verbose_name="Alternativní jméno deskové hry", help_text="Zadejte alternativní jméno deskové hry",default='')
-    vydani = models.DateField(blank=True,null=True, verbose_name='Datum narození')
+    vydani = models.DateField(blank=True,null=True, verbose_name='Datum vydání')
     minvek = models.IntegerField(verbose_name='Minimální věk', help_text='Zadejte minimální věk', validators=[MinValueValidator(0), MaxValueValidator(99)],default=0)
     cas = models.IntegerField(verbose_name='Délka hry', help_text='Zadejte délku hry v minutách', validators=[MinValueValidator(0), MaxValueValidator(999)], default=0)
     pocet_hrac = models.IntegerField(verbose_name='Počet hráčů', help_text='Zadejte počet hráčů', validators=[MinValueValidator(1), MaxValueValidator(99)],default=1)
@@ -66,7 +66,7 @@ class Rozsireni(models.Model):
         return f'{self.nazev}'
     
 
-class vydavatelstvi(models.Model):
+class Vydavatelstvi(models.Model):
     Jmeno = models.CharField(max_length=80, verbose_name='Jméno vydavatelství', help_text='Zadejte jméno vydavatelství')
 
     class Meta:
@@ -78,7 +78,7 @@ class vydavatelstvi(models.Model):
 
 class DeskovkaVydavatelstvi(models.Model):
     deskovka = models.ForeignKey(Deskovka, on_delete=models.CASCADE, related_name='deskovka_vydavatelstvi')
-    vydavatelstvi = models.ForeignKey(vydavatelstvi, on_delete=models.CASCADE, related_name='vydavatelstvi_deskovka')
+    vydavatelstvi = models.ForeignKey(Vydavatelstvi, on_delete=models.CASCADE, related_name='vydavatelstvi_deskovka')
 
     class Meta:
         verbose_name = 'Vydavatelství deskovky'
@@ -89,7 +89,7 @@ class DeskovkaVydavatelstvi(models.Model):
 
 
 
-class tvurci(models.Model):
+class Tvurci(models.Model):
     Jmeno = models.CharField(max_length=80, verbose_name='Jméno tvůrce', help_text='Zadejte jméno tvůrce')
     Prijmeni = models.CharField(max_length=80, verbose_name='Příjmení tvůrce', help_text='Zadejte příjmení tvůrce')
     zivotopis = models.TextField(verbose_name='Životopis', help_text='Zadejte životopis tvůrce')
@@ -101,7 +101,7 @@ class tvurci(models.Model):
     def __str__(self):
         return f'{self.Jmeno} {self.Prijmeni}'
     
-class role(models.Model):
+class Role(models.Model):
     nazev = models.CharField(max_length=80, verbose_name='Název role', help_text='Zadejte název role')
 
     class Meta:
@@ -112,8 +112,8 @@ class role(models.Model):
         return f'{self.nazev}'
 
 class TvurceRole(models.Model):
-    tvurce = models.ForeignKey(tvurci, on_delete=models.CASCADE, related_name='tvurce_role')
-    role = models.ForeignKey(role, on_delete=models.CASCADE, related_name='role_tvurce')
+    tvurce = models.ForeignKey(Tvurci, on_delete=models.CASCADE, related_name='tvurce_role')
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='role_tvurce')
 
     class Meta:
         verbose_name = 'Role tvůrce'
@@ -125,14 +125,14 @@ class TvurceRole(models.Model):
 
 class DeskovkaTvurce(models.Model):
     deskovka = models.ForeignKey(Deskovka, on_delete=models.CASCADE, related_name='deskovka_tvurce')
-    tvurce = models.ForeignKey(tvurci, on_delete=models.CASCADE, related_name='tvurce_deskovka')
+    tvurce = models.ForeignKey(Tvurci, on_delete=models.CASCADE, related_name='tvurce_deskovka')
 
     class Meta:
         verbose_name = 'Tvůrce deskovky'
         verbose_name_plural = 'Tvůrci deskovek'
 
     def __str__(self):
-        return f'{self.deskovka.jmeno} - {self.tvurce.Jmeno} {self.tvurce.Prijmeni}'
+        return f'{self.deskovka.nazev} - {self.tvurce.Jmeno} {self.tvurce.Prijmeni}'
     
 
 class Hodnoceni(models.Model):
@@ -147,6 +147,6 @@ class Hodnoceni(models.Model):
         verbose_name_plural = 'Hodnocení'
 
     def __str__(self):
-        return f'{self.Hra.jmeno} - {self.uzivatel.username} - {self.hodnoceni}'
-    
+        return f'{self.Hra.nazev} - {self.uzivatel.username} - {self.hodnoceni}'
+
 

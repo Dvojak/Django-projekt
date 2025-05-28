@@ -7,8 +7,7 @@ from .models import Deskovka, Zanr, Rozsireni
 class BoardModelForm(forms.ModelForm):
     class Meta:
         model = Deskovka
-        fields = ['nazev','alt', 'rok_vydani', 'minimalni_vek','prum_cas',
-                  'pocet_hracu','komplexita','fotografie','popis']
+        fields = ['nazev','alt', 'vydani', 'minvek','cas','pocet_hrac','komplexita','fotografie','popis']
         labels = {
             'nazev': 'Jméno deskové hry',
             'alt': 'Alternativní jméno deskové hry',

@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.urls import reverse_lazy
 
 def index(request):
-    return render(request, 'users/index.html')
+    return render(request, 'index.html')
 
 class DeskovkaCreationView(CreateView):
     model = Deskovka
@@ -20,13 +20,13 @@ class DeskovkaCreationView(CreateView):
 
 class DeskovkaListView(ListView):
     model = Deskovka
-    template_name = 'templates/games/boardgames_list.html'
+    template_name = 'boardgames_list.html'
     queryset = Deskovka.objects.order_by('nazev')
     context_object_name = 'deskovky'
 
 class DeskovkaDetailView(DetailView):
     model = Deskovka
-    template_name = 'templates/games/boardgames_detail.html'
+    template_name = 'boardgames_detail.html'
     context_object_name = 'deskovka'
 
 class DeskovkaUpdateView(UpdateView):
@@ -62,7 +62,7 @@ def create_deskovka(request):
     else:   
         form = BoardModelForm()
 
-    return render(request, 'templates/games/boardgames_create.html', {'form': form})
+    return render(request, 'boardgames_create.html', {'form': form})
         
 def upadate_deskovka(request, pk):
     deskovka = get_object_or_404(Deskovka, pk=pk)
@@ -74,14 +74,14 @@ def upadate_deskovka(request, pk):
     else:
         form = BoardModelForm(instance=deskovka)
 
-    return render(request, 'templates/games/boardgames_update.html', {'form': form, 'deskovka': deskovka})
+    return render(request, 'boardgames_update.html', {'form': form, 'deskovka': deskovka})
 
 def delete_deskovka(request, pk):
     deskovka = get_object_or_404(Deskovka, pk=pk)
     if request.method == 'POST':
         deskovka.delete()
         return redirect('deskovka_list')
-    return render(request, 'templates/games/boardgames_delete.html', {'deskovka': deskovka})
+    return render(request, 'boardgames_delete.html', {'deskovka': deskovka})
 
 def register(request):
     if request.method == 'POST':
