@@ -48,9 +48,11 @@ class BoardModelForm(forms.ModelForm):
                 raise forms.ValidationError('Fotografie musí být ve formátu JPG, JPEG nebo PNG.')
         return fotografie    
         
-
-
-
+        
+class ZanrForm(forms.ModelForm):
+    class Meta:
+        model = Zanr
+        fields = ['nazev']
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)

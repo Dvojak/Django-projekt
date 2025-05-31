@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Přidat deskovou hru{% endblock %}
+
+{% block content %}
+<h2>Přidat novou deskovou hru</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <button type="submit">Uložit</button>
+    <a href="{% url 'deskovka_list' %}">Zpět na seznam</a>
+</form>
+{% endblock %}

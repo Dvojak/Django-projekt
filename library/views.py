@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect ,get_object_or_404
 from .models import Deskovka, Zanr, Rozsireni
-from .forms import UserRegistrationForm, BoardModelForm
+from .forms import UserRegistrationForm, BoardModelForm, ZanrForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import  AuthenticationForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -12,7 +12,7 @@ def index(request):
 class DeskovkaCreationView(CreateView):
     model = Deskovka
     form_class = BoardModelForm
-    template_name = 'templates/games/boardgames_list.html'
+    template_name = 'games/boardgames_list.html'
 
     def get_success_url(self):
         return reverse_lazy('deskovka_detail', kwargs={'pk': self.object.pk})
@@ -20,19 +20,19 @@ class DeskovkaCreationView(CreateView):
 
 class DeskovkaListView(ListView):
     model = Deskovka
-    template_name = 'boardgames_list.html'
+    template_name = 'games/boardgames_list.html'
     queryset = Deskovka.objects.order_by('nazev')
     context_object_name = 'deskovky'
 
 class DeskovkaDetailView(DetailView):
     model = Deskovka
-    template_name = 'boardgames_detail.html'
+    template_name = 'games/boardgames_detail.html'
     context_object_name = 'deskovka'
 
 class DeskovkaUpdateView(UpdateView):
     model = Deskovka
     form_class = BoardModelForm
-    template_name = 'templates/games/boardgames_update.html'
+    template_name = 'games/boardgames_update.html'
 
     def get_success_url(self):
         return reverse_lazy('deskovka_detail', kwargs={'pk': self.object.pk})
@@ -40,7 +40,7 @@ class DeskovkaUpdateView(UpdateView):
 
 class DeskovkaDeleteView(DeleteView):
     model = Deskovka
-    template_name = 'templates/games/boardgames_delete.html'
+    template_name = 'games/boardgames_delete.html'
     context_object_name = 'deskovka'
     success_url = reverse_lazy('deskovka_list')
 
@@ -51,7 +51,7 @@ def books_by_genre(request, genre):
         'genre': genre,
         'deskovky': Deskovka.objects.order_by('nazev').filter(zanr__zanr=genre),
     }
-    return render(request,'templates/games/boardgames_by_genre.html',context=context)
+    return render(request,'/games/boardgames_by_genre.html',context=context)
 
 def create_deskovka(request):
     if request.method == 'POST':
@@ -62,7 +62,7 @@ def create_deskovka(request):
     else:   
         form = BoardModelForm()
 
-    return render(request, 'boardgames_create.html', {'form': form})
+    return render(request, '/games/boardgames_create.html', {'form': form})
         
 def upadate_deskovka(request, pk):
     deskovka = get_object_or_404(Deskovka, pk=pk)
@@ -74,14 +74,38 @@ def upadate_deskovka(request, pk):
     else:
         form = BoardModelForm(instance=deskovka)
 
-    return render(request, 'boardgames_update.html', {'form': form, 'deskovka': deskovka})
+    return render(request, 'games/boardgames_update.html', {'form': form, 'deskovka': deskovka})
 
 def delete_deskovka(request, pk):
     deskovka = get_object_or_404(Deskovka, pk=pk)
     if request.method == 'POST':
         deskovka.delete()
         return redirect('deskovka_list')
-    return render(request, 'boardgames_delete.html', {'deskovka': deskovka})
+    return render(request, 'games/boardgames_delete.html', {'deskovka': deskovka})
+
+class ZanrListView(ListView):
+    model = Zanr
+    template_name = 'genre/genre_list.html'
+    context_object_name = 'zanry'
+
+
+def zanr_delete(request, pk):
+    zanr = get_object_or_404(Zanr, pk=pk)
+    if request.method == 'POST':
+        zanr.delete()
+        return redirect('zanr_list')
+    return render(request, 'genre/genre_delete.html', {'zanr': zanr})
+
+def zanr_create(request):
+    if request.method == 'POST':
+        form = ZanrForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('zanr_list')
+    else:
+        form = ZanrForm()
+    return render(request, 'genre/genre_create.html', {'form': form})
+
 
 def register(request):
     if request.method == 'POST':
