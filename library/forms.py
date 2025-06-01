@@ -54,6 +54,29 @@ class ZanrForm(forms.ModelForm):
         model = Zanr
         fields = ['nazev']
 
+class RozsireniForm(forms.ModelForm):
+    class Meta:
+        model = Rozsireni
+        fields = ['nazev', 'deskovka', 'vydani', 'popis', 'fotografie']
+        labels = {
+            'nazev': 'Název rozšíření',
+            'deskovka': 'Deskova hra',
+            'vydani': 'Datum vydání',
+            'popis': 'Popis rozšíření',
+            'fotografie': 'Obrázek rozšíření',
+        }
+        widgets = {
+            'nazev': forms.TextInput(attrs={'class': 'form-control'}),
+            'vydani': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'popis': forms.Textarea(attrs={'class': 'form-control'}),
+        }        
+        def clean_fotografie(self):
+            fotografie = self.cleaned_data.get('fotografie')
+            if fotografie:
+                if not fotografie.name.endswith(('.jpg', '.jpeg', '.png')):
+                    raise forms.ValidationError('Fotografie musí být ve formátu JPG, JPEG nebo PNG.')
+            return fotografie    
+
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     username = forms.CharField(max_length=30, required=True)

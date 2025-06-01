@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect ,get_object_or_404
 from .models import Deskovka, Zanr, Rozsireni
-from .forms import UserRegistrationForm, BoardModelForm, ZanrForm
+from .forms import UserRegistrationForm, BoardModelForm, ZanrForm, RozsireniForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import  AuthenticationForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -28,21 +28,6 @@ class DeskovkaDetailView(DetailView):
     model = Deskovka
     template_name = 'games/boardgames_detail.html'
     context_object_name = 'deskovka'
-
-class DeskovkaUpdateView(UpdateView):
-    model = Deskovka
-    form_class = BoardModelForm
-    template_name = 'games/boardgames_update.html'
-
-    def get_success_url(self):
-        return reverse_lazy('deskovka_detail', kwargs={'pk': self.object.pk})
-
-
-class DeskovkaDeleteView(DeleteView):
-    model = Deskovka
-    template_name = 'games/boardgames_delete.html'
-    context_object_name = 'deskovka'
-    success_url = reverse_lazy('deskovka_list')
 
 def books_by_genre(request, genre):
     if not Zanr.objects.filter(nazev=genre).exists():
@@ -88,6 +73,11 @@ class ZanrListView(ListView):
     template_name = 'genre/genre_list.html'
     context_object_name = 'zanry'
 
+def zanr_detail(request, pk):
+    zanr = get_object_or_404(Zanr, pk=pk)
+    return render(request, 'genre/genre_detail.html', {'zanr': zanr})
+
+
 
 def zanr_delete(request, pk):
     zanr = get_object_or_404(Zanr, pk=pk)
@@ -105,6 +95,24 @@ def zanr_create(request):
     else:
         form = ZanrForm()
     return render(request, 'genre/genre_create.html', {'form': form})
+
+class RozsireniListView(ListView):
+    model = Rozsireni
+    template_name = 'expansions/expansion_list.html'
+    context_object_name = 'rozsireni'
+
+
+
+def rozsireni_create(request):
+    if request.method == 'POST':
+        form = RozsireniForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('rozsireni_list')
+    else:
+        form = RozsireniForm()
+    return render(request, 'expansions/expansion_create.html', {'form': form})
+
 
 
 def register(request):

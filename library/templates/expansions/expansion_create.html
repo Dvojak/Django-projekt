@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Přidat nové rozšíření{% endblock %}
+
+{% block content %}
+<h2>Přidat nové rozšíření</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+
+    <button type="submit">Uložit</button>
+    <a href="{% url 'rozsireni_list' %}">Zpět na seznam rozšíření</a>
+</form>
+{% endblock %}

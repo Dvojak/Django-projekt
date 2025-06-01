@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Přidat žánr{% endblock %}
+
+{% block content %}
+<h2>Přidat nový žánr</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+
+    <button type="submit">Uložit</button>
+    <a href="{% url 'zanr_list' %}">Zpět na seznam žánrů</a>
+</form>
+{% endblock %}

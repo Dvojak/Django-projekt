@@ -7,7 +7,7 @@
 <ul>
     {% for zanr in zanry %}
         <li>
-            <strong>{{ zanr.nazev }}</strong>
+            <strong><a href="{% url 'zanr_detail' zanr.pk %}">{{ zanr.nazev }}</a></strong>
             <ul>
                 {% for deskovka in zanr.zanr_deskovka.all %}
                     <li>

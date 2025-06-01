@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Detail žánru{% endblock %}
+
+{% block content %}
+<h2>Žánr: {{ zanr.nazev }}</h2>
+
+<h3>Deskove hry v tomto žánru:</h3>
+<ul>
+    {% for deskovka in zanr.zanr_deskovka.all %}
+        <li>
+            <a href="{% url 'deskovka_detail' deskovka.deskovka.pk %}">
+                {{ deskovka.deskovka.nazev }}
+            </a>
+        </li>
+    {% empty %}
+        <li>Žádné deskovky v tomto žánru.</li>
+    {% endfor %}
+</ul>
+
+<hr>
+<a href="{% url 'zanr_delete' zanr.pk %}">Smazat</a>
+<a href="{% url 'zanr_list' %}">Zpět na seznam žánrů</a>
+{% endblock %}
