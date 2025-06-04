@@ -71,7 +71,7 @@ class RozsireniForm(forms.ModelForm):
         }
         widgets = {
             'nazev': forms.TextInput(attrs={'class': 'form-control'}),
-            'vydani': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'vydani': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'popis': forms.Textarea(attrs={'class': 'form-control'}),
         }        
         def clean_fotografie(self):
