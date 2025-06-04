@@ -9,10 +9,11 @@ class Deskovka(models.Model):
     nazev = models.CharField(max_length=80, verbose_name="Jméno deskové hry", help_text="Zadejte jméno deskové hry", default='',
             error_messages={'blank':'Jméno deskové hry musí být vyplněno'})
     alt = models.CharField(max_length=80, verbose_name="Alternativní jméno deskové hry", help_text="Zadejte alternativní jméno deskové hry",default='')
-    vydani = models.DateField(blank=True,null=True, verbose_name='Datum vydání')
+    vydani = models.IntegerField(blank=True,null=True, verbose_name='Datum vydání', validators=[MinValueValidator(1900), MaxValueValidator(2100)])
     minvek = models.IntegerField(verbose_name='Minimální věk', help_text='Zadejte minimální věk', validators=[MinValueValidator(0), MaxValueValidator(99)],default=0)
     cas = models.IntegerField(verbose_name='Délka hry', help_text='Zadejte délku hry v minutách', validators=[MinValueValidator(0), MaxValueValidator(999)], default=0)
-    pocet_hrac = models.IntegerField(verbose_name='Počet hráčů', help_text='Zadejte počet hráčů', validators=[MinValueValidator(1), MaxValueValidator(99)],default=1)
+    min_hracu = models.IntegerField(verbose_name='Minimální počet hráčů', help_text='Zadejte minimální počet hráčů', validators=[MinValueValidator(1), MaxValueValidator(99)],default=1)
+    max_hracu = models.IntegerField(verbose_name='Maximální počet hráčů', help_text='Zadejte maximální počet hráčů', validators=[MinValueValidator(1), MaxValueValidator(99)],default=1)
     KOMPLEXITA = [(0, ''), (1, '*'), (2, '**'), (3, '***'), (4, '****'), (5, '*****'), ]
     komplexita = models.PositiveIntegerField(choices=KOMPLEXITA, verbose_name="Komplexita hry", default=3)
     fotografie = models.ImageField(upload_to='deskovky',verbose_name='Fotografie',blank=True,null=True)

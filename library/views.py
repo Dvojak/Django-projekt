@@ -29,15 +29,6 @@ class DeskovkaDetailView(DetailView):
     template_name = 'games/boardgames_detail.html'
     context_object_name = 'deskovka'
 
-def books_by_genre(request, genre):
-    if not Zanr.objects.filter(nazev=genre).exists():
-        return render(request, '404.html',status=404)
-    context = {
-        'genre': genre,
-        'deskovky': Deskovka.objects.order_by('nazev').filter(zanr__zanr=genre),
-    }
-    return render(request,'/games/boardgames_by_genre.html',context=context)
-
 def create_deskovka(request):
     if request.method == 'POST':
         form = BoardModelForm(request.POST, request.FILES)
@@ -47,7 +38,7 @@ def create_deskovka(request):
     else:   
         form = BoardModelForm()
 
-    return render(request, '/games/boardgames_create.html', {'form': form})
+    return render(request, 'games/boardgames_create.html', {'form': form})
         
 def upadate_deskovka(request, pk):
     deskovka = get_object_or_404(Deskovka, pk=pk)

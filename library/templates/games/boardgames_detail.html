@@ -14,7 +14,7 @@
     <li><strong>Datum vydání:</strong> {{ deskovka.vydani }}</li>
     <li><strong>Minimální věk:</strong> {{ deskovka.minvek }}</li>
     <li><strong>Délka hry:</strong> {{ deskovka.cas }} minut</li>
-    <li><strong>Počet hráčů:</strong> {{ deskovka.pocet_hrac }}</li>
+    <li><strong>Počet hráčů:</strong> {{ deskovka.min_hracu }}–{{ deskovka.max_hracu }}</li>
     <li><strong>Komplexita:</strong> {{ deskovka.get_komplexita_display }}</li>
     <li><strong>Popis:</strong><br>{{ deskovka.popis|linebreaks }}</li>
 </ul>

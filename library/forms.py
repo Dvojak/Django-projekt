@@ -7,17 +7,19 @@ from .models import Deskovka, Zanr, Rozsireni
 class BoardModelForm(forms.ModelForm):
     class Meta:
         model = Deskovka
-        fields = ['nazev','alt', 'vydani', 'minvek','cas','pocet_hrac','komplexita','fotografie','popis']
+        fields = [ 'nazev', 'alt', 'vydani', 'minvek', 'cas',
+            'min_hracu', 'max_hracu', 'komplexita', 'fotografie', 'popis']
         labels = {
-            'nazev': 'Jméno deskové hry',
-            'alt': 'Alternativní jméno deskové hry',
-            'rok_vydani': 'Rok vydání',
-            'minimalni_vek': 'Minimální věk',
-            'prum_cas': 'Průměrná délka hry',
-            'pocet_hracu': 'Počet hráčů',
-            'komplexita': 'Komplexita hry',
-            'fotografie': 'Fotografie',
-            'popis': 'Popis',
+            'nazev': 'Název hry',
+            'alt': 'Alternativní název',
+            'vydani': 'Rok vydání',
+            'minvek': 'Minimální věk',
+            'cas': 'Délka hry (min)',
+            'min_hracu': 'Min. hráčů',
+            'max_hracu': 'Max. hráčů',
+            'komplexita': 'Komplexita',
+            'fotografie': 'Obrázek',
+            'popis': 'Popis hry',
         }
         help_texts = {
             'nazev': 'Zadejte jméno deskové hry',
@@ -25,7 +27,8 @@ class BoardModelForm(forms.ModelForm):
             'rok_vydani': 'Zadejte rok vydání deskové hry',
             'minimalni_vek': 'Zadejte minimální věk',
             'prum_cas': 'Zadejte průměrnou délku hry v minutách',
-            'pocet_hracu': 'Zadejte počet hráčů',
+            'min_hracu': 'Zadejte minimální počet hráčů',
+            'max_hracu': 'Zadejte maximální počet hráčů',
             'komplexita': 'Zadejte komplexitu hry (0-5)',
             'fotografie': 'Vyberte fotografii deskové hry',
             'popis': 'Zadejte popis deskové hry',
@@ -36,7 +39,8 @@ class BoardModelForm(forms.ModelForm):
             'rok_vydani': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'minimalni_vek': forms.NumberInput(attrs={'class': 'form-control'}),
             'prum_cas': forms.NumberInput(attrs={'class': 'form-control'}),
-            'pocet_hracu': forms.NumberInput(attrs={'class': 'form-control'}),
+            'min_hracu': forms.NumberInput(attrs={'class': 'form-control'}),
+            'max_hracu': forms.NumberInput(attrs={'class': 'form-control'}),
             'komplexita': forms.Select(attrs={'class': 'form-control'}),
             'popis': forms.Textarea(attrs={'class': 'form-control'}),
         }
