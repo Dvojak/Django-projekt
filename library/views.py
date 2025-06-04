@@ -104,6 +104,27 @@ def rozsireni_create(request):
         form = RozsireniForm()
     return render(request, 'expansions/expansion_create.html', {'form': form})
 
+def rozsireni_detail(request, pk):
+    rozsireni = get_object_or_404(Rozsireni, pk=pk)
+    return render(request, 'expansions/expansion_detail.html', {'rozsireni': rozsireni})
+
+def rozsireni_update(request, pk):
+    rozsireni = get_object_or_404(Rozsireni, pk=pk)
+    if request.method == 'POST':
+        form = RozsireniForm(request.POST, request.FILES, instance=rozsireni)
+        if form.is_valid():
+            form.save()
+            return redirect('rozsireni_detail', pk=rozsireni.pk)
+    else:
+        form = RozsireniForm(instance=rozsireni)
+    return render(request, 'expansions/expansion_update.html', {'form': form, 'rozsireni': rozsireni})
+
+def rozsireni_delete(request, pk):
+    rozsireni = get_object_or_404(Rozsireni, pk=pk)
+    if request.method == 'POST':
+        rozsireni.delete()
+        return redirect('rozsireni_list')
+    return render(request, 'expansions/expansion_delete.html', {'rozsireni': rozsireni})
 
 
 def register(request):

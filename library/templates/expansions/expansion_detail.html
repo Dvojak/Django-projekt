@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Detail rozšíření{% endblock %}
+
+{% block content %}
+<h2>{{ rozsireni.nazev }}</h2>
+
+{% if rozsireni.fotografie %}
+    <img src="{{ rozsireni.fotografie.url }}" alt="{{ rozsireni.nazev }}" width="300">
+{% endif %}
+
+<ul>
+    {% if rozsireni.deskovka %}
+        <li><strong>Deskova hra:</strong>
+            <a href="{% url 'deskovka_detail' rozsireni.deskovka.pk %}">
+                {{ rozsireni.deskovka.nazev }}
+            </a>
+        </li>
+    {% else %}
+        <li><strong>Deskova hra:</strong> (nepřiřazeno)</li>
+    {% endif %}
+
+    {% if rozsireni.vydani %}
+        <li><strong>Rok vydání:</strong> {{ rozsireni.vydani }}</li>
+    {% endif %}
+
+    <li><strong>Popis:</strong><br>{{ rozsireni.popis|linebreaks }}</li>
+</ul>
+
+<a href="{% url 'rozsireni_update' rozsireni.pk %}">Upravit</a> |
+<a href="{% url 'rozsireni_delete' rozsireni.pk %}">Smazat</a> |
+<a href="{% url 'rozsireni_list' %}">Zpět na seznam</a>
+{% endblock %}

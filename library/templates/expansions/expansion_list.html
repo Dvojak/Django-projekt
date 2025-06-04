@@ -7,7 +7,7 @@
 <ul>
     {% for item in rozsireni %}
         <li>
-            <strong>{{ item.nazev }}</strong>
+            <strong><a href="{% url 'rozsireni_detail' item.pk %}">{{ item.nazev }}</a></strong>
             {% if item.deskovka %}
                 – k deskové hře:
                 <a href="{% url 'deskovka_detail' item.deskovka.pk %}">
