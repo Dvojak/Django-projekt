@@ -93,7 +93,7 @@ class DeskovkaVydavatelstvi(models.Model):
 class Tvurci(models.Model):
     Jmeno = models.CharField(max_length=80, verbose_name='Jméno tvůrce', help_text='Zadejte jméno tvůrce')
     Prijmeni = models.CharField(max_length=80, verbose_name='Příjmení tvůrce', help_text='Zadejte příjmení tvůrce')
-    zivotopis = models.TextField(verbose_name='Životopis', help_text='Zadejte životopis tvůrce')
+    zivotopis = models.TextField(verbose_name='Životopis', help_text='Zadejte životopis tvůrce', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Tvůrce'
