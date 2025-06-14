@@ -96,7 +96,6 @@ class Tvurci(models.Model):
     ROLE_CHOICES = [
         ('designer', 'Designer'),
         ('illustrator', 'Ilustrátor'),
-        ('publisher', 'Vydavatel'),
     ]
     Jmeno = models.CharField(max_length=80, verbose_name='Jméno tvůrce', help_text='Zadejte jméno tvůrce')
     Prijmeni = models.CharField(max_length=80, verbose_name='Příjmení tvůrce', help_text='Zadejte příjmení tvůrce')
