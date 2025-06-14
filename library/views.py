@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect ,get_object_or_404
 from .models import Deskovka, Zanr, Rozsireni, Tvurci
-from .forms import UserRegistrationForm, BoardModelForm, ZanrForm, RozsireniForm, TvurciForm
+from .forms import UserRegistrationForm, BoardModelForm, ZanrForm, RozsireniForm, TvurciForm, VydavatelstviForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import  AuthenticationForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -176,6 +176,44 @@ def tvurci_delete(request, pk):
         tvurce.delete()
         return redirect('tvurce_list')
     return render(request, 'tvurci/tvurci_delete.html', {'tvurce': tvurce})
+
+from .models import Vydavatelstvi
+
+def vydavatelstvi_list(request):
+    vydavatelstvi = Vydavatelstvi.objects.all().order_by('Jmeno')
+    return render(request, 'vydavatelstvi/vydavatelstvi_list.html', {'vydavatelstvi_list': vydavatelstvi})
+
+def vydavatelstvi_detail(request, pk):
+    vydavatelstvi = get_object_or_404(Vydavatelstvi, pk=pk)
+    return render(request, 'vydavatelstvi/vydavatelstvi_detail.html', {'vydavatelstvi': vydavatelstvi})
+
+def vydavatelstvi_create(request):
+    if request.method == 'POST':
+        form = VydavatelstviForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('vydavatelstvi_list')
+    else:
+        form = VydavatelstviForm()
+    return render(request, 'vydavatelstvi/vydavatelstvi_create.html', {'form': form})
+
+def vydavatelstvi_update(request, pk):
+    vydavatelstvi = get_object_or_404(Vydavatelstvi, pk=pk)
+    if request.method == 'POST':
+        form = VydavatelstviForm(request.POST, instance=vydavatelstvi)
+        if form.is_valid():
+            form.save()
+            return redirect('vydavatelstvi_detail', pk=vydavatelstvi.pk)
+    else:
+        form = VydavatelstviForm(instance=vydavatelstvi)
+    return render(request, 'vydavatelstvi/vydavatelstvi_update.html', {'form': form, 'vydavatelstvi': vydavatelstvi})
+
+def vydavatelstvi_delete(request, pk):
+    vydavatelstvi = get_object_or_404(Vydavatelstvi, pk=pk)
+    if request.method == 'POST':
+        vydavatelstvi.delete()
+        return redirect('vydavatelstvi_list')
+    return render(request, 'vydavatelstvi/vydavatelstvi_delete.html', {'vydavatelstvi': vydavatelstvi})
 
 
 def register(request):

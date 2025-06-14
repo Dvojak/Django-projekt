@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Deskovka, Zanr, Rozsireni, Tvurci
+from .models import Deskovka, Zanr, Rozsireni, Tvurci, Vydavatelstvi
 
 
 class BoardModelForm(forms.ModelForm):
@@ -138,3 +138,14 @@ class TvurciForm(forms.ModelForm):
             if ext not in ['jpg', 'jpeg', 'png']:
                 raise forms.ValidationError('Fotografie musí být ve formátu JPG, JPEG nebo PNG.')
         return fotografie
+    
+class VydavatelstviForm(forms.ModelForm):
+    class Meta:
+        model = Vydavatelstvi
+        fields = ['Jmeno']
+        labels = {
+            'Jmeno': 'Jméno vydavatelství',
+        }
+        widgets = {
+            'Jmeno': forms.TextInput(attrs={'class': 'form-control'}),
+        }   

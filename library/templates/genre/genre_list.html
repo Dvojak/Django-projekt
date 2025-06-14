@@ -8,16 +8,35 @@
 {% for zanr in zanry %}
     <li>
         <strong>{{ zanr.nazev }}</strong>
-        <ul>
-            {% for deskovka in zanr.deskovky.all %}
-                <li>
-                    <a href="{% url 'deskovka_detail' deskovka.pk %}">{{ deskovka.nazev }}</a>
-                </li>
-            {% empty %}
-                <li>Žádné deskovky v tomto žánru.</li>
-            {% endfor %}
-        </ul>
+
+        {% with deskovky=zanr.deskovky.all %}
+        {% if deskovky %}
+            <p><em>Deskové hry:</em></p>
+            <ul>
+                {% for deskovka in deskovky %}
+                    <li>
+                        <a href="{% url 'deskovka_detail' deskovka.pk %}">{{ deskovka.nazev }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+
+        {% with rozsireni=zanr.rozsireni.all %}
+        {% if rozsireni %}
+            <p><em>Rozšíření:</em></p>
+            <ul>
+                {% for rozs in rozsireni %}
+                    <li>
+                        <a href="{% url 'rozsireni_detail' rozs.pk %}">{{ rozs.nazev }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
     </li>
+{% empty %}
+    <li>Žádné žánry nebyly nalezeny.</li>
 {% endfor %}
 </ul>
 

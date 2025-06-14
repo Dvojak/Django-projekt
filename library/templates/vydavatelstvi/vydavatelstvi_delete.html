@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Smazat vydavatelství{% endblock %}
+
+{% block content %}
+<h2>Opravdu chcete smazat vydavatelství: "{{ vydavatelstvi.Jmeno }}"?</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Ano, smazat</button>
+    <a href="{% url 'vydavatelstvi_detail' vydavatelstvi.pk %}">Ne, zpět</a>
+</form>
+{% endblock %}

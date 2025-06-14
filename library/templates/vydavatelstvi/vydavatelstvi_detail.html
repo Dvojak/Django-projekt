@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}{{ vydavatelstvi.Jmeno }} – detail{% endblock %}
+
+{% block content %}
+<h2>{{ vydavatelstvi.Jmeno }}</h2>
+
+{% if vydavatelstvi.deskovky.exists %}
+    <h3>Deskové hry:</h3>
+    <ul>
+        {% for hra in vydavatelstvi.deskovky.all %}
+            <li>
+                <a href="{% url 'deskovka_detail' hra.pk %}">{{ hra.nazev }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Žádné deskové hry nejsou přiřazeny.</p>
+{% endif %}
+
+{% if vydavatelstvi.rozsireni.exists %}
+    <h3>Rozšíření:</h3>
+    <ul>
+        {% for rozs in vydavatelstvi.rozsireni.all %}
+            <li>
+                <a href="{% url 'rozsireni_detail' rozs.pk %}">{{ rozs.nazev }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Žádná rozšíření nejsou přiřazena.</p>
+{% endif %}
+
+<hr>
+<a href="{% url 'vydavatelstvi_update' vydavatelstvi.pk %}">Upravit</a> |
+<a href="{% url 'vydavatelstvi_delete' vydavatelstvi.pk %}">Smazat</a> |
+<a href="{% url 'vydavatelstvi_list' %}">Zpět na seznam</a>
+{% endblock %}

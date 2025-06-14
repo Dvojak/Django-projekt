@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Upravit vydavatelství{% endblock %}
+
+{% block content %}
+<h2>Upravit vydavatelství: {{ vydavatelstvi.Jmeno }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+
+    <button type="submit">Uložit změny</button>
+    <a href="{% url 'vydavatelstvi_detail' vydavatelstvi.pk %}">Zpět na detail</a>
+</form>
+{% endblock %}
