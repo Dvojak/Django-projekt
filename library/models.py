@@ -9,8 +9,7 @@ class Deskovka(models.Model):
     nazev = models.CharField(max_length=80, verbose_name="Jméno deskové hry", help_text="Zadejte jméno deskové hry", default='',
             error_messages={'blank':'Jméno deskové hry musí být vyplněno'})
     alt = models.CharField(max_length=80, verbose_name="Alternativní jméno deskové hry", help_text="Zadejte alternativní jméno deskové hry",default='')
-    zanr = models.ForeignKey('Zanr', on_delete=models.CASCADE, related_name='deskovka_zanr', verbose_name='Žánr deskové hry', help_text='Vyberte žánr deskové hry', blank=True, null=True)
-    
+    zanry = models.ManyToManyField('Zanr',related_name='deskovky',verbose_name='Žánry deskové hry',help_text='Vyberte jeden nebo více žánrů',blank=True)
     vydani = models.IntegerField(blank=True,null=True, verbose_name='Datum vydání', validators=[MinValueValidator(1900), MaxValueValidator(2100)])
     minvek = models.IntegerField(verbose_name='Minimální věk', help_text='Zadejte minimální věk', validators=[MinValueValidator(0), MaxValueValidator(99)],default=0)
     cas = models.IntegerField(verbose_name='Délka hry', help_text='Zadejte délku hry v minutách', validators=[MinValueValidator(0), MaxValueValidator(999)], default=0)

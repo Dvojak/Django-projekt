@@ -1,18 +1,18 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Deskovka, Zanr, Rozsireni
+from .models import Deskovka, Zanr, Rozsireni, Tvurci
 
 
 class BoardModelForm(forms.ModelForm):
     class Meta:
         model = Deskovka
-        fields = [ 'nazev', 'alt','zanr', 'vydani', 'minvek', 'cas',
+        fields = [ 'nazev', 'alt','zanry', 'vydani', 'minvek', 'cas',
             'min_hracu', 'max_hracu', 'komplexita', 'fotografie', 'popis']
         labels = {
             'nazev': 'Název hry',
             'alt': 'Alternativní název',
-            'zanr': 'Žánr',
+            'zanry': 'Žánr/y',
             'vydani': 'Rok vydání',
             'minvek': 'Minimální věk',
             'cas': 'Délka hry (min)',
@@ -25,7 +25,7 @@ class BoardModelForm(forms.ModelForm):
         help_texts = {
             'nazev': 'Zadejte jméno deskové hry',
             'alt': 'Zadejte alternativní jméno deskové hry',
-            'zanr': 'Vyberte žánr deskové hry',
+            'zanry': 'Vyberte žánr či žánry deskové hry',
             'rok_vydani': 'Zadejte rok vydání deskové hry',
             'minimalni_vek': 'Zadejte minimální věk',
             'prum_cas': 'Zadejte průměrnou délku hry v minutách',
@@ -38,7 +38,7 @@ class BoardModelForm(forms.ModelForm):
         widgets = {
             'nazev': forms.TextInput(attrs={'class': 'form-control'}),
             'alt': forms.TextInput(attrs={'class': 'form-control'}),
-            'zanr': forms.Select(attrs={'class': 'form-control'}),
+            'zanry': forms.CheckboxSelectMultiple(),
             'rok_vydani': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'minimalni_vek': forms.NumberInput(attrs={'class': 'form-control'}),
             'prum_cas': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -98,3 +98,13 @@ class UserRegistrationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+    
+class TvurciForm(forms.ModelForm):
+        class Meta:
+            model = Tvurci
+            fields = ['Jmeno','Prijmeni', 'role']
+            labels = {
+                'jmeno': 'Jméno tvůrce',
+                'prijmeni': 'Příjmení tvůrce',
+                'role': 'Role tvůrce',
+            }

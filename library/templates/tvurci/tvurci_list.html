@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Seznam tvůrců{% endblock %}
+
+{% block content %}
+<h2>Seznam tvůrců</h2>
+
+<!-- Filtrovací formulář -->
+<form method="get">
+    <label for="role">Filtrovat podle role:</label>
+    <select name="role" id="role" onchange="this.form.submit()">
+        <option value="">-- Všechny role --</option>
+        {% for value, label in role_choices.items %}
+            <option value="{{ value }}" {% if value == role %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
+<hr>
+
+<ul>
+    {% for tvurce in tvurci %}
+        <li>
+            <strong>{{ tvurce.Jmeno }} {{ tvurce.Prijmeni }} </strong> – {{ tvurce.get_role_display }}
+
+            {% if tvurce.navrhovane_hry.exists %}
+                <ul>
+                    {% for hra in tvurce.navrhovane_hry.all %}
+                        <li>
+                            <a href="{% url 'deskovka_detail' hra.pk %}">{{ hra.nazev }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% empty %}
+        <li>Žádní tvůrci nebyli nalezeni.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'tvurci_create' %}">Přidat nového tvůrce</a>
+
+{% endblock %}

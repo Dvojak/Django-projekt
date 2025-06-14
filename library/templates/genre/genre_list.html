@@ -5,24 +5,20 @@
 <h2>Seznam žánrů</h2>
 
 <ul>
-    {% for zanr in zanry %}
-        <li>
-            <strong><a href="{% url 'zanr_detail' zanr.pk %}">{{ zanr.nazev }}</a></strong>
-            <ul>
-                {% for deskovka in zanr.deskovka_zanr.all %}
-                    <li>
-                        <a href="{% url 'deskovka_detail' deskovka.pk %}">
-                            {{ deskovka.nazev }}
-                        </a>
-                    </li>
-                {% empty %}
-                    <li>Žádné deskovky v tomto žánru.</li>
-                {% endfor %}
-            </ul>
-        </li>
-    {% empty %}
-        <li>Žádné žánry nebyly nalezeny.</li>
-    {% endfor %}
+{% for zanr in zanry %}
+    <li>
+        <strong>{{ zanr.nazev }}</strong>
+        <ul>
+            {% for deskovka in zanr.deskovky.all %}
+                <li>
+                    <a href="{% url 'deskovka_detail' deskovka.pk %}">{{ deskovka.nazev }}</a>
+                </li>
+            {% empty %}
+                <li>Žádné deskovky v tomto žánru.</li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endfor %}
 </ul>
 
 <a href="{% url 'zanr_create' %}">Přidat nový žánr</a>

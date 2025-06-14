@@ -21,6 +21,9 @@ urlpatterns = [
     path('deskovka/<int:pk>/delete/', views.delete_deskovka, name='deskovka_delete'),
     path('zanr/<int:pk>/delete/', views.zanr_delete, name='zanr_delete'),
     path('rozsireni/<int:pk>/delete/', views.rozsireni_delete, name='rozsireni_delete'),
+    path('tvurci/', views.tvurci_list, name='tvurci_list'),
+    path('tvurci/add/', views.tvurci_create, name='tvurci_create'),
+
     
 
 ]

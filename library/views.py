@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect ,get_object_or_404
-from .models import Deskovka, Zanr, Rozsireni
-from .forms import UserRegistrationForm, BoardModelForm, ZanrForm, RozsireniForm
+from .models import Deskovka, Zanr, Rozsireni, Tvurci
+from .forms import UserRegistrationForm, BoardModelForm, ZanrForm, RozsireniForm, TvurciForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import  AuthenticationForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -126,6 +126,32 @@ def rozsireni_delete(request, pk):
         return redirect('rozsireni_list')
     return render(request, 'expansions/expansion_delete.html', {'rozsireni': rozsireni})
 
+def tvurci_list(request):
+    role = request.GET.get('role')  # např. 'designer'
+    tvurci = Tvurci.objects.all().order_by('Jmeno')
+
+    if role:
+        tvurci = tvurci.filter(role=role)
+
+    # Předáme i seznam všech dostupných rolí (ze `ROLE_CHOICES`)
+    role_choices = dict(Tvurci.ROLE_CHOICES)
+
+    return render(request, 'tvurci/tvurci_list.html', {
+        'tvurci': tvurci,
+        'role': role,
+        'role_choices': role_choices,
+    })
+
+
+def tvurci_create(request):
+    if request.method == 'POST':
+        form = TvurciForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('tvurci_list')
+    else:
+        form = TvurciForm()
+    return render(request, 'tvurci/tvurci_create.html', {'form': form})
 
 def register(request):
     if request.method == 'POST':

@@ -12,6 +12,13 @@
 <ul>
     <li><strong>Alternativní název:</strong> {{ deskovka.alt }}</li>
     <li><strong>Datum vydání:</strong> {{ deskovka.vydani }}</li>
+    <li><strong>Žánry:</strong>
+    {% for zanr in deskovka.zanry.all %}
+        {{ zanr.nazev }}{% if not forloop.last %}, {% endif %}
+    {% empty %}
+        (žádné)
+    {% endfor %}
+    </li>
     <li><strong>Minimální věk:</strong> {{ deskovka.minvek }}</li>
     <li><strong>Délka hry:</strong> {{ deskovka.cas }} minut</li>
     <li><strong>Počet hráčů:</strong> {{ deskovka.min_hracu }}–{{ deskovka.max_hracu }}</li>
