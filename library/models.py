@@ -11,6 +11,7 @@ class Deskovka(models.Model):
     alt = models.CharField(max_length=80, verbose_name="Alternativní jméno deskové hry", help_text="Zadejte alternativní jméno deskové hry",default='')
     zanry = models.ManyToManyField('Zanr',related_name='deskovky',verbose_name='Žánry deskové hry',help_text='Vyberte jeden nebo více žánrů',blank=True)
     designer = models.ManyToManyField('Tvurci', related_name='deskovky', verbose_name='Tvůrci deskové hry', help_text='Vyberte jednoho nebo více tvůrců', blank=True)
+    vydavatelstvi = models.ManyToManyField('Vydavatelstvi', related_name='deskovky',verbose_name='Vydavatelství', help_text='Vyberte jméno vydavatelství deskové hry', blank=True)
     vydani = models.IntegerField(blank=True,null=True, verbose_name='Datum vydání', validators=[MinValueValidator(1900), MaxValueValidator(2100)])
     minvek = models.IntegerField(verbose_name='Minimální věk', help_text='Zadejte minimální věk', validators=[MinValueValidator(0), MaxValueValidator(99)],default=0)
     cas = models.IntegerField(verbose_name='Délka hry', help_text='Zadejte délku hry v minutách', validators=[MinValueValidator(0), MaxValueValidator(999)], default=0)
