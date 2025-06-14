@@ -10,6 +10,7 @@ class Deskovka(models.Model):
             error_messages={'blank':'Jméno deskové hry musí být vyplněno'})
     alt = models.CharField(max_length=80, verbose_name="Alternativní jméno deskové hry", help_text="Zadejte alternativní jméno deskové hry",default='')
     zanr = models.ForeignKey('Zanr', on_delete=models.CASCADE, related_name='deskovka_zanr', verbose_name='Žánr deskové hry', help_text='Vyberte žánr deskové hry', blank=True, null=True)
+    
     vydani = models.IntegerField(blank=True,null=True, verbose_name='Datum vydání', validators=[MinValueValidator(1900), MaxValueValidator(2100)])
     minvek = models.IntegerField(verbose_name='Minimální věk', help_text='Zadejte minimální věk', validators=[MinValueValidator(0), MaxValueValidator(99)],default=0)
     cas = models.IntegerField(verbose_name='Délka hry', help_text='Zadejte délku hry v minutách', validators=[MinValueValidator(0), MaxValueValidator(999)], default=0)
@@ -92,9 +93,14 @@ class DeskovkaVydavatelstvi(models.Model):
 
 
 class Tvurci(models.Model):
+    ROLE_CHOICES = [
+        ('designer', 'Designer'),
+        ('illustrator', 'Ilustrátor'),
+        ('publisher', 'Vydavatel'),
+    ]
     Jmeno = models.CharField(max_length=80, verbose_name='Jméno tvůrce', help_text='Zadejte jméno tvůrce')
     Prijmeni = models.CharField(max_length=80, verbose_name='Příjmení tvůrce', help_text='Zadejte příjmení tvůrce')
-    role = models.ForeignKey('Role', on_delete=models.CASCADE, related_name='tvurce_role', verbose_name='Role tvůrce', help_text='Vyberte roli tvůrce', blank=True, null=True)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, verbose_name='Role',blank=True, null=True, help_text='Vyberte roli tvůrce')
     zivotopis = models.TextField(verbose_name='Životopis', help_text='Zadejte životopis tvůrce', blank=True, null=True)
 
     class Meta:
@@ -102,29 +108,8 @@ class Tvurci(models.Model):
         verbose_name_plural = 'Tvůrci'
 
     def __str__(self):
-        return f'{self.Jmeno} {self.Prijmeni}'
+        return f'{self.Jmeno} {self.Prijmeni} - ({self.get_role_display()})'
     
-class Role(models.Model):
-    nazev = models.CharField(max_length=80, verbose_name='Název role', help_text='Zadejte název role')
-
-    class Meta:
-        verbose_name = 'Role'
-        verbose_name_plural = 'Role'
-
-    def __str__(self):
-        return f'{self.nazev}'
-
-class TvurceRole(models.Model):
-    tvurce = models.ForeignKey(Tvurci, on_delete=models.CASCADE, related_name='tvurce_role')
-    role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='role_tvurce')
-
-    class Meta:
-        verbose_name = 'Role tvůrce'
-        verbose_name_plural = 'Role tvůrců'
-
-    def __str__(self):
-        return f'{self.tvurce.Jmeno} {self.tvurce.Prijmeni} - {self.role.nazev}'
-
 
 class DeskovkaTvurce(models.Model):
     deskovka = models.ForeignKey(Deskovka, on_delete=models.CASCADE, related_name='deskovka_tvurce')
