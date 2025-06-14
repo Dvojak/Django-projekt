@@ -157,6 +157,27 @@ def tvurci_detail(request, pk):
     tvurce = get_object_or_404(Tvurci, pk=pk)
     return render(request, 'tvurci/tvurci_detail.html', {'tvurce': tvurce})
 
+def tvurci_update(request, pk):
+    tvurce = get_object_or_404(Tvurci, pk=pk)
+    if request.method == 'POST':
+        form = TvurciForm(request.POST, instance=tvurce)
+        if form.is_valid():
+            form.save()
+            return redirect('tvurci_detail', pk=tvurce.pk)
+    else:
+        form = TvurciForm(instance=tvurce)
+    return render(request, 'tvurci/tvurci_update.html', {'form': form, 'tvurce': tvurce})
+
+from django.shortcuts import get_object_or_404, redirect
+
+def tvurci_delete(request, pk):
+    tvurce = get_object_or_404(Tvurci, pk=pk)
+    if request.method == 'POST':
+        tvurce.delete()
+        return redirect('tvurce_list')
+    return render(request, 'tvurci/tvurci_delete.html', {'tvurce': tvurce})
+
+
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)

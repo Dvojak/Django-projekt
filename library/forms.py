@@ -100,11 +100,28 @@ class UserRegistrationForm(UserCreationForm):
         return user
     
 class TvurciForm(forms.ModelForm):
-        class Meta:
-            model = Tvurci
-            fields = ['Jmeno','Prijmeni', 'role']
-            labels = {
-                'jmeno': 'Jméno tvůrce',
-                'prijmeni': 'Příjmení tvůrce',
-                'role': 'Role tvůrce',
-            }
+    class Meta:
+        model = Tvurci
+        fields = ['Jmeno', 'Prijmeni', 'role', 'zivotopis', 'fotografie']
+        labels = {
+            'Jmeno': 'Jméno tvůrce',
+            'Prijmeni': 'Příjmení tvůrce',
+            'role': 'Role tvůrce',
+            'zivotopis': 'Životopis',
+            'fotografie': 'Fotografie',
+        }
+        widgets = {
+            'Jmeno': forms.TextInput(attrs={'class': 'form-control'}),
+            'Prijmeni': forms.TextInput(attrs={'class': 'form-control'}),
+            'role': forms.Select(attrs={'class': 'form-control'}),
+            'zivotopis': forms.Textarea(attrs={'class': 'form-control'}),
+            'fotografie': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean_fotografie(self):
+        fotografie = self.cleaned_data.get('fotografie')
+        if fotografie:
+            ext = fotografie.name.lower().split('.')[-1]
+            if ext not in ['jpg', 'jpeg', 'png']:
+                raise forms.ValidationError('Fotografie musí být ve formátu JPG, JPEG nebo PNG.')
+        return fotografie

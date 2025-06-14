@@ -24,6 +24,10 @@ urlpatterns = [
     path('tvurci/', views.tvurci_list, name='tvurci_list'),
     path('tvurci/add/', views.tvurci_create, name='tvurci_create'),
     path('tvurci/<int:pk>/', views.tvurci_detail, name='tvurci_detail'),
+    path('tvurci/<int:pk>/edit/', views.tvurci_update, name='tvurci_update'),
+    path('tvurci/<int:pk>/delete/', views.tvurci_delete, name='tvurci_delete'),
+
+
 
 
     

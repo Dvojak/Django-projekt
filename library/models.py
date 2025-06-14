@@ -100,6 +100,7 @@ class Tvurci(models.Model):
     Prijmeni = models.CharField(max_length=80, verbose_name='Příjmení tvůrce', help_text='Zadejte příjmení tvůrce')
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, verbose_name='Role',blank=True, null=True, help_text='Vyberte roli tvůrce')
     zivotopis = models.TextField(verbose_name='Životopis', help_text='Zadejte životopis tvůrce', blank=True, null=True)
+    fotografie = models.ImageField(upload_to='tvurci', null=True, blank=True, verbose_name='Fotografie')
 
     class Meta:
         verbose_name = 'Tvůrce'

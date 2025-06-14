@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Smazat tvůrce{% endblock %}
+
+{% block content %}
+<h2>Opravdu chcete smazat tvůrce: "{{ tvurce.jmeno }}"?</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Ano, smazat</button>
+    <a href="{% url 'tvurci_detail' tvurce.pk %}">Ne, zpět</a>
+</form>
+{% endblock %}
