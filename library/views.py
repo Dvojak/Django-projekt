@@ -153,6 +153,10 @@ def tvurci_create(request):
         form = TvurciForm()
     return render(request, 'tvurci/tvurci_create.html', {'form': form})
 
+def tvurci_detail(request, pk):
+    tvurce = get_object_or_404(Tvurci, pk=pk)
+    return render(request, 'tvurci/tvurci_detail.html', {'tvurce': tvurce})
+
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)

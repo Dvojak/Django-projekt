@@ -23,6 +23,8 @@ urlpatterns = [
     path('rozsireni/<int:pk>/delete/', views.rozsireni_delete, name='rozsireni_delete'),
     path('tvurci/', views.tvurci_list, name='tvurci_list'),
     path('tvurci/add/', views.tvurci_create, name='tvurci_create'),
+    path('tvurci/<int:pk>/', views.tvurci_detail, name='tvurci_detail'),
+
 
     
 

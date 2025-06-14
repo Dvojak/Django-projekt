@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}{{ tvurce.jmeno }} – detail{% endblock %}
+
+{% block content %}
+<h2>{{ tvurce.jmeno }}</h2>
+<p><strong>Role:</strong> {{ tvurce.get_role_display }}</p>
+
+{% if tvurce.navrhovane_hry.exists %}
+    <h3>Deskové hry navržené tímto tvůrcem:</h3>
+    <ul>
+        {% for hra in tvurce.navrhovane_hry.all %}
+            <li>
+                <a href="{% url 'deskovka_detail' hra.pk %}">{{ hra.nazev }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Žádné deskové hry zatím nenavrhl.</p>
+{% endif %}
+
+<a href="{% url 'tvurci_update' tvurce.pk %}">Upravit</a> |
+<a href="{% url 'tvurci_delete' tvurce.pk %}">Smazat</a> |
+<a href="{% url 'tvurci_list' %}">Zpět na seznam</a>
+{% endblock %}

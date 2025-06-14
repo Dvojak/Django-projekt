@@ -22,7 +22,7 @@
 <ul>
     {% for tvurce in tvurci %}
         <li>
-            <strong>{{ tvurce.Jmeno }} {{ tvurce.Prijmeni }} </strong> – {{ tvurce.get_role_display }}
+            <strong><a href="{% url 'tvurci_detail' tvurce.pk %}">{{ tvurce.Jmeno }} {{ tvurce.Prijmeni }}</a> </strong> – {{ tvurce.get_role_display }}
 
             {% if tvurce.navrhovane_hry.exists %}
                 <ul>
