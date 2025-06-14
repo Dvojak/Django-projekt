@@ -18,7 +18,25 @@
     {% else %}
         <li><strong>Deskova hra:</strong> (nepřiřazeno)</li>
     {% endif %}
-
+        <li><strong>Vydavatelstvi: </strong> 
+    {% for vydavatelstvo in rozsireni.vydavatelstvi.all %}
+        {{ vydavatelstvo.Jmeno }}{% if not forloop.last %}, {% endif %}
+    {% empty %}
+        (žádné)
+    {% endfor %} </li>
+    <li><strong>Tvůrci: </strong> 
+    {% for tvurci in rozsireni.designer.all %}
+        {{ tvurci.Jmeno }} {{ tvurci.Prijmeni }} - ({{ tvurci.role }}) {% if not forloop.last %}, {% endif %}
+    {% empty %}
+        (žádné)
+    {% endfor %} </li>
+    <li><strong>Žánry:</strong>
+    {% for zanr in rozsireni.zanry.all %}
+        {{ zanr.nazev }}{% if not forloop.last %}, {% endif %}
+    {% empty %}
+        (žádné)
+    {% endfor %}
+    </li>
     {% if rozsireni.vydani %}
         <li><strong>Rok vydání:</strong> {{ rozsireni.vydani }}</li>
     {% endif %}

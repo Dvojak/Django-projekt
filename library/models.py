@@ -58,6 +58,9 @@ class DeskovkaZanr(models.Model):
 class Rozsireni(models.Model):
     nazev = models.CharField(max_length=80, verbose_name='Název rozšíření', help_text='Zadejte název rozšíření')
     deskovka = models.ForeignKey(Deskovka, on_delete=models.CASCADE, related_name='rozsirena_deskovka')
+    zanry = models.ManyToManyField('Zanr',related_name='rozsireni',verbose_name='Žánry deskové hry',help_text='Vyberte jeden nebo více žánrů',blank=True)
+    designer = models.ManyToManyField('Tvurci', related_name='rozsireni', verbose_name='Tvůrci deskové hry', help_text='Vyberte jednoho nebo více tvůrců', blank=True)
+    vydavatelstvi = models.ManyToManyField('Vydavatelstvi', related_name='rozsireni',verbose_name='Vydavatelství', help_text='Vyberte jméno vydavatelství deskové hry', blank=True)
     vydani = models.IntegerField(blank=True,null=True, verbose_name='Datum vydání', validators=[MinValueValidator(1900), MaxValueValidator(2100)])
     popis = models.TextField(verbose_name='Popis', help_text='Zadejte popis rozšíření')
     fotografie = models.ImageField(upload_to='rozsireni',verbose_name='Fotografie',blank=True,null=True)

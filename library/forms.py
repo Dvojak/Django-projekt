@@ -70,18 +70,25 @@ class ZanrForm(forms.ModelForm):
 class RozsireniForm(forms.ModelForm):
     class Meta:
         model = Rozsireni
-        fields = ['nazev', 'deskovka', 'vydani', 'popis', 'fotografie']
+        fields = ['nazev', 'deskovka','designer', 'vydavatelstvi','zanry', 'vydani', 'popis', 'fotografie']
         labels = {
             'nazev': 'Název rozšíření',
             'deskovka': 'Deskova hra',
+            'designer': 'Jméno tvůrce/ců',
+            'vydavatelstvi': 'Název vydavatelství',
+            'zanry': 'Žánr/y',
             'vydani': 'Datum vydání',
             'popis': 'Popis rozšíření',
             'fotografie': 'Obrázek rozšíření',
         }
         widgets = {
             'nazev': forms.TextInput(attrs={'class': 'form-control'}),
+            'designer' : forms.CheckboxSelectMultiple(),
+            'zanry': forms.CheckboxSelectMultiple(),
+            'vydavatelstvi': forms.CheckboxSelectMultiple(),
             'vydani': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'popis': forms.Textarea(attrs={'class': 'form-control'}),
+
         }        
         def clean_fotografie(self):
             fotografie = self.cleaned_data.get('fotografie')
