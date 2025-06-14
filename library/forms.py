@@ -7,11 +7,12 @@ from .models import Deskovka, Zanr, Rozsireni, Tvurci
 class BoardModelForm(forms.ModelForm):
     class Meta:
         model = Deskovka
-        fields = [ 'nazev', 'alt','zanry', 'vydani', 'minvek', 'cas',
+        fields = [ 'nazev', 'alt','designer','zanry', 'vydani', 'minvek', 'cas',
             'min_hracu', 'max_hracu', 'komplexita', 'fotografie', 'popis']
         labels = {
             'nazev': 'Název hry',
             'alt': 'Alternativní název',
+            'designer': 'Jméno tvůrce/ců',
             'zanry': 'Žánr/y',
             'vydani': 'Rok vydání',
             'minvek': 'Minimální věk',
@@ -25,6 +26,7 @@ class BoardModelForm(forms.ModelForm):
         help_texts = {
             'nazev': 'Zadejte jméno deskové hry',
             'alt': 'Zadejte alternativní jméno deskové hry',
+            'designer': 'Vyberte jméno tvůrce/ců hry',
             'zanry': 'Vyberte žánr či žánry deskové hry',
             'rok_vydani': 'Zadejte rok vydání deskové hry',
             'minimalni_vek': 'Zadejte minimální věk',
@@ -38,6 +40,7 @@ class BoardModelForm(forms.ModelForm):
         widgets = {
             'nazev': forms.TextInput(attrs={'class': 'form-control'}),
             'alt': forms.TextInput(attrs={'class': 'form-control'}),
+            'designer' : forms.CheckboxSelectMultiple(),
             'zanry': forms.CheckboxSelectMultiple(),
             'rok_vydani': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'minimalni_vek': forms.NumberInput(attrs={'class': 'form-control'}),

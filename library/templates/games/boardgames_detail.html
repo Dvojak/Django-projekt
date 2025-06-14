@@ -12,6 +12,12 @@
 <ul>
     <li><strong>Alternativní název:</strong> {{ deskovka.alt }}</li>
     <li><strong>Datum vydání:</strong> {{ deskovka.vydani }}</li>
+    <li><strong>Tvůrci: </strong> 
+    {% for tvurci in deskovka.designer.all %}
+        {{ tvurci.Jmeno }} {{ tvurci.Prijmeni }} - ({{ tvurci.role }}) {% if not forloop.last %}, {% endif %}
+    {% empty %}
+        (žádné)
+    {% endfor %} </li>
     <li><strong>Žánry:</strong>
     {% for zanr in deskovka.zanry.all %}
         {{ zanr.nazev }}{% if not forloop.last %}, {% endif %}
