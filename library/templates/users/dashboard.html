@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Vítej, {{ user.username }}!</h2>
+
+<ul>
+    <li><a href="{% url 'deskovka_list' %}">Seznam deskových her</a></li>
+    <li><a href="{% url 'rozsireni_list' %}">Seznam rozšíření</a></li>
+    <li><a href="{% url 'zanr_list' %}">Seznam žánrů</a></li>
+    <li><a href="{% url 'tvurci_list' %}">Seznam tvůrců</a></li>
+    <li><a href="{% url 'vydavatelstvi_list' %}">Seznam vydavatelství</a></li>
+</ul>
+
+{% if user.username == 'admin' %}
+    <h3>Administrace</h3>
+    <ul>
+        <li><a href="{% url 'deskovka_create' %}">Přidat novou deskovku</a></li>
+        <li><a href="{% url 'rozsireni_create' %}">Přidat nové rozšíření</a></li>
+        <li><a href="{% url 'zanr_create' %}">Přidat nový žánr</a></li>
+        <li><a href="{% url 'tvurci_create' %}">Přidat tvůrce</a></li>
+        <li><a href="{% url 'vydavatelstvi_create' %}">Přidat vydavatelství</a></li>
+    </ul>
+{% endif %}
+
+<p><a href="{% url 'logout' %}">Odhlásit se</a></p>
+{% endblock %}

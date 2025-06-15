@@ -31,7 +31,9 @@
 {% endif %}
 
 <hr>
-<a href="{% url 'vydavatelstvi_update' vydavatelstvi.pk %}">Upravit</a> |
+{% if user.is_authenticated and user.username == 'admin' %}
+   <a href="{% url 'vydavatelstvi_update' vydavatelstvi.pk %}">Upravit</a> |
 <a href="{% url 'vydavatelstvi_delete' vydavatelstvi.pk %}">Smazat</a> |
+{% endif %}
 <a href="{% url 'vydavatelstvi_list' %}">Zpět na seznam</a>
 {% endblock %}

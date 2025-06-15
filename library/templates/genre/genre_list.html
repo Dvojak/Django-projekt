@@ -39,6 +39,7 @@
     <li>Žádné žánry nebyly nalezeny.</li>
 {% endfor %}
 </ul>
-
-<a href="{% url 'zanr_create' %}">Přidat nový žánr</a>
+{% if user.is_authenticated and user.username == 'admin' %}
+    <a href="{% url 'zanr_create' %}">Přidat nový žánr</a>
+{% endif %}
 {% endblock %}

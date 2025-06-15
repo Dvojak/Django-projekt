@@ -23,6 +23,8 @@
         <li>Žádné vydavatelství zatím neexistuje.</li>
     {% endfor %}
 </ul>
+{% if user.is_authenticated and user.username == 'admin' %}
+    <a href="{% url 'vydavatelstvi_create' %}">Přidat nové vydavatelství</a>
+{% endif %}
 
-<a href="{% url 'vydavatelstvi_create' %}">Přidat nové vydavatelství</a>
 {% endblock %}

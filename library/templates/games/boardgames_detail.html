@@ -38,7 +38,10 @@
     <li><strong>Popis:</strong><br>{{ deskovka.popis|linebreaks }}</li>
 </ul>
 
-<a href="{% url 'deskovka_update' deskovka.pk %}">Upravit</a> |
-<a href="{% url 'deskovka_delete' deskovka.pk %}">Smazat</a> |
+
+{% if user.is_authenticated and user.username == 'admin' %}
+    <a href="{% url 'deskovka_update' deskovka.pk %}">Upravit</a> |
+    <a href="{% url 'deskovka_delete' deskovka.pk %}">Smazat</a>
+{% endif %}
 <a href="{% url 'deskovka_list' %}">Zpět na seznam</a>
 {% endblock %}
