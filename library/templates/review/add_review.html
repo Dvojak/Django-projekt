@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}{{ is_update|yesno:"Upravit hodnocení,Přidat hodnocení" }} – {{ hra.nazev }}{% endblock %}
+
+{% block content %}
+  <h2>{{ is_update|yesno:"Upravit své hodnocení,Přidat nové hodnocení" }} pro hru: <em>{{ hra.nazev }}</em></h2>
+
+  <form method="post">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <input type="submit" value="Uložit">
+  </form>
+
+  <p><a href="{% url 'deskovka_detail' hra.pk %}">Zpět na detail hry</a></p>
+{% endblock %}

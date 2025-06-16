@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Smazat hodnocení{% endblock %}
+
+{% block content %}
+  <h2>Opravdu chcete smazat své hodnocení?</h2>
+
+  <p><strong>Hra:</strong> {{ hodnoceni.Hra.nazev }}</p>
+  <p><strong>Hodnocení:</strong> {{ hodnoceni.hodnoceni }}/10</p>
+  <p><strong>Recenze:</strong> {{ hodnoceni.recenze }}</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="submit" value="Ano, smazat">
+    <a href="{% url 'deskovka_detail' hodnoceni.Hra.pk %}">Zpět</a>
+  </form>
+{% endblock %}

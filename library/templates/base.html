@@ -1,29 +1,69 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="cs">
+
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
     <title>{% block title %}Databáze deskových her{% endblock %}</title>
 </head>
+
 <body>
 
-    <header>
-        <h1><a href="{% url 'index' %}">Deskovky</a></h1>
-        {% if user.is_authenticated %}
-            <p>Přihlášen: {{ user.username }} | <a href="{% url 'logout' %}">Odhlásit</a></p>
-        {% else %}
-            <a href="{% url 'login' %}">Přihlásit</a> |
-            <a href="{% url 'register' %}">Registrovat</a>
-        {% endif %}
-        <hr>
-        <a href="{% url 'deskovka_list'%}">Deskovky</a>
-        <a href="{% url 'zanr_list'%}">Žánry</a>
-        <a href="{% url 'rozsireni_list'%}">Rozšíření</a>
-        <a href="{% url 'tvurci_list'%}">Tvůrci</a>
-        <a href="{% url 'vydavatelstvi_list'%}">Vydavatelstvi</a>
-    </header>
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{% url 'index' %}">
+                <strong>Deskovky</strong>
+            </a>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarMain" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="{% url 'deskovka_list' %}">Deskovky</a>
+                <a class="navbar-item" href="{% url 'zanr_list' %}">Žánry</a>
+                <a class="navbar-item" href="{% url 'rozsireni_list' %}">Rozšíření</a>
+                <a class="navbar-item" href="{% url 'tvurci_list' %}">Tvůrci</a>
+                <a class="navbar-item" href="{% url 'vydavatelstvi_list' %}">Vydavatelstvi</a>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    {% if user.is_authenticated %}
+                        <div>Přihlášen: {{ user.username }}</div>
+                        <div class="buttons">
+                            <a class="button is-light" href="{% url 'logout' %}">Odhlásit</a>
+                        </div>
+                    {% else %}
+                        <div class="buttons">
+                            <a class="button is-light" href="{% url 'login' %}">Přihlásit</a>
+                            <a class="button is-primary" href="{% url 'register' %}"><strong>Registrovat</strong></a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+            if ($navbarBurgers.length > 0) {
+                $navbarBurgers.forEach( el => {
+                    el.addEventListener('click', () => {
+                        const target = el.dataset.target;
+                        const $target = document.getElementById(target);
+                        el.classList.toggle('is-active');
+                        $target.classList.toggle('is-active');
+                    });
+                });
+            }
+        });
+    </script>
 
     <main>
         {% block content %}{% endblock %}
@@ -34,4 +74,5 @@
         <p>&copy; {{ year }} Deskovky App</p>
     </footer>
 </body>
+
 </html>

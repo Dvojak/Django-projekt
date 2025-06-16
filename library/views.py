@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect ,get_object_or_404
-from .models import Deskovka, Zanr, Rozsireni, Tvurci
-from .forms import UserRegistrationForm, BoardModelForm, ZanrForm, RozsireniForm, TvurciForm, VydavatelstviForm
+from .models import Deskovka, Zanr, Rozsireni, Tvurci, Hodnoceni
+from .forms import UserRegistrationForm, BoardModelForm, ZanrForm, RozsireniForm, TvurciForm, VydavatelstviForm, HodnoceniForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import  AuthenticationForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     return render(request, 'index.html')
@@ -28,6 +29,19 @@ class DeskovkaDetailView(DetailView):
     model = Deskovka
     template_name = 'games/boardgames_detail.html'
     context_object_name = 'deskovka'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        deskovka = self.get_object()
+
+        if self.request.user.is_authenticated:
+            uz_jedno = deskovka.hodnoceni_set.filter(uzivatel=self.request.user).exists()
+            context['uzivatel_hodnotil'] = uz_jedno
+        else:
+            context['uzivatel_hodnotil'] = False
+
+        return context
+
 
 def create_deskovka(request):
     if request.method == 'POST':
@@ -252,3 +266,40 @@ def dashboard(request):
         return render(request, 'users/dashboard.html')
     else:
         return redirect('login')
+    
+@login_required
+def add_change_review(request, hra_id):
+    hra = get_object_or_404(Deskovka, pk=hra_id)
+
+    # zkontrolujeme, jestli uživatel už hodnotil
+    hodnoceni, created = Hodnoceni.objects.get_or_create(
+        Hra=hra,
+        uzivatel=request.user,
+        defaults={'hodnoceni': 0, 'recenze': ''}
+    )
+
+    if request.method == 'POST':
+        form = HodnoceniForm(request.POST, instance=hodnoceni)
+        if form.is_valid():
+            form.save()
+            return redirect('deskovka_detail', pk=hra.pk)
+    else:
+        form = HodnoceniForm(instance=hodnoceni)
+
+    return render(request, 'review/add_review.html', {
+        'form': form,
+        'hra': hra,
+        'is_update': not created  # použiješ v šabloně
+    })
+
+@login_required
+def review_delete(request, hra_id):
+    hodnoceni = get_object_or_404(Hodnoceni, Hra_id=hra_id, uzivatel=request.user)
+
+    if request.method == 'POST':
+        hodnoceni.delete()
+        return redirect('deskovka_detail', pk=hra_id)
+
+    return render(request, 'review/review_delete.html', {
+        'hodnoceni': hodnoceni
+    })

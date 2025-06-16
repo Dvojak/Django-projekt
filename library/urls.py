@@ -31,6 +31,8 @@ urlpatterns = [
     path('vydavatelstvi/add/', views.vydavatelstvi_create, name='vydavatelstvi_create'),
     path('vydavatelstvi/<int:pk>/edit/', views.vydavatelstvi_update, name='vydavatelstvi_update'),
     path('vydavatelstvi/<int:pk>/delete/', views.vydavatelstvi_delete, name='vydavatelstvi_delete'),
+    path('deskovka/<int:hra_id>/hodnoceni/', views.add_change_review, name='hodnoceni_add'),
+    path('deskovka/<int:hra_id>/hodnoceni/smazat/', views.review_delete, name='hodnoceni_delete'),
 
 
 

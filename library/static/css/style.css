@@ -1,15 +1,11 @@
 /* Reset + base styl */
 body {
-    font-family: 'Segoe UI', 'Roboto', sans-serif;
-    background-color: #f3f3f3;
+    font-family: 'Segoe UI', 'Roboto', sans-serif;;
     margin: 0;
     padding: 0;
-    color: #222;
 }
 
 header {
-    background-color: #2e3a59;
-    color: white;
     padding: 1rem 2rem;
 }
 
@@ -19,7 +15,6 @@ header h1 {
 }
 
 header a {
-    color: #ffd700;
     text-decoration: none;
     margin-right: 1rem;
 }
@@ -32,8 +27,6 @@ main {
     padding: 2rem;
     max-width: 960px;
     margin: auto;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
     border-radius: 4px;
 }
 
@@ -41,8 +34,6 @@ footer {
     text-align: center;
     padding: 1rem;
     font-size: 0.9rem;
-    background-color: #e1e1e1;
-    color: #555;
     margin-top: 2rem;
 }
 
@@ -51,7 +42,7 @@ ul {
 }
 
 a {
-    color: #0055a5;
+
 }
 
 a:hover {
@@ -61,8 +52,6 @@ a:hover {
 /* Tlačítka */
 button,
 input[type="submit"] {
-    background-color: #2e3a59;
-    color: white;
     border: none;
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -72,7 +61,7 @@ input[type="submit"] {
 
 button:hover,
 input[type="submit"]:hover {
-    background-color: #1f2a44;
+
 }
 
 /* Tabulky ve formulářích */
@@ -86,11 +75,11 @@ table td {
 
 /* Kartičky */
 .card {
-    border: 1px solid #ccc;
+
     border-radius: 4px;
     padding: 1rem;
     margin: 1rem 0;
-    background-color: #fafafa;
+
 }
 
 /* Obrázky u her */
@@ -100,3 +89,5 @@ img {
     display: block;
     margin: 1rem 0;
 }
+
+

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Deskovka, Zanr, Rozsireni, Tvurci, Vydavatelstvi
+from .models import Deskovka, Zanr, Rozsireni, Tvurci, Vydavatelstvi, Hodnoceni
 
 
 class BoardModelForm(forms.ModelForm):
@@ -149,3 +149,21 @@ class VydavatelstviForm(forms.ModelForm):
         widgets = {
             'Jmeno': forms.TextInput(attrs={'class': 'form-control'}),
         }   
+class HodnoceniForm(forms.ModelForm):
+    class Meta:
+        model = Hodnoceni
+        fields = ['hodnoceni', 'recenze']
+        labels = {
+            'hodnoceni': 'Hodnocení (0–10)',
+            'recenze': 'Text recenze',
+        }
+        widgets = {
+            'hodnoceni': forms.NumberInput(attrs={'min': 0, 'max': 10, 'class': 'form-control'}),
+            'recenze': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
+        }
+
+    def clean_hodnoceni(self):
+        hodnoceni = self.cleaned_data.get('hodnoceni')
+        if hodnoceni is not None and (hodnoceni < 0 or hodnoceni > 10):
+            raise forms.ValidationError("Hodnocení musí být mezi 0 a 10.")
+        return hodnoceni        

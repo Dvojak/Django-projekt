@@ -47,5 +47,13 @@
 <a href="{% url 'rozsireni_update' rozsireni.pk %}">Upravit</a> |
 <a href="{% url 'rozsireni_delete' rozsireni.pk %}">Smazat</a>
 {% endif %} |
+{% if user.is_authenticated %}
+    {% if uzivatel_hodnotil %}
+        <a href="{% url 'hodnoceni_add' rozsireni.pk %}">Upravit hodnocení</a> |
+        <a href="{% url 'hodnoceni_delete' rozsireni.pk %}">Smazat hodnocení</a>
+    {% else %}
+        <a href="{% url 'hodnoceni_add' rozsireni.pk %}">Přidat hodnocení</a>
+    {% endif %}
+{% endif %}
 <a href="{% url 'rozsireni_list' %}">Zpět na seznam</a>
 {% endblock %}
