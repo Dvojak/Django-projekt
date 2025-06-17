@@ -303,3 +303,9 @@ def review_delete(request, hra_id):
     return render(request, 'review/review_delete.html', {
         'hodnoceni': hodnoceni
     })
+
+def review_deskovky(request, hra_id):
+    hra = get_object_or_404(Deskovka, pk=hra_id)
+    hodnoceni = hra.hodnoceni_set.select_related('uzivatel').order_by('-datum')
+    return render(request, 'review/review_list.html', {'hra': hra, 'hodnoceni': hodnoceni})
+

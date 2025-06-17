@@ -3,25 +3,51 @@
 {% block title %}Seznam deskových her{% endblock %}
 
 {% block content %}
-<h2>Seznam deskových her</h2>
+<section class="section">
+  <div class="container">
+    <h1 class="title">Seznam deskových her</h1>
 
-<ul>
-    {% for deskovka in deskovky %}
-        <li>
-            <a href="{% url 'deskovka_detail' deskovka.pk %}">
-                {{ deskovka.nazev }}
-            </a>
-            {% if deskovka.fotografie %}
-                <br>
-                <img src="{{ deskovka.fotografie.url }}" alt="{{ deskovka.nazev }}" width="150">
-            {% endif %}
-        </li>
-    {% empty %}
-        <li>Žádné deskové hry nenalezeny.</li>
-    {% endfor %}
-</ul>
+    {% if deskovky %}
+      <div class="columns is-multiline">
+        {% for deskovka in deskovky %}
+          <div class="column is-one-third">
+            <div class="card">
+              <div class="card-image">
+                {% if deskovka.fotografie %}
+                  <figure class="image is-4by3">
+                    <img src="{{ deskovka.fotografie.url }}" alt="{{ deskovka.nazev }}">
+                  </figure>
+                {% else %}
+                  <figure class="image is-4by3">
+                    <img src="{% static 'images/placeholder.png' %}" alt="bez obrázku">
+                  </figure>
+                {% endif %}
+              </div>
+              <div class="card-content">
+                <p class="title is-5">{{ deskovka.nazev }}</p>
+                {% if deskovka.alt %}
+                  <p class="subtitle is-6">({{ deskovka.alt }})</p>
+                {% endif %}
+              </div>
+              <footer class="card-footer">
+                <a href="{% url 'deskovka_detail' deskovka.pk %}" class="card-footer-item">Detail</a>
+                {% if user.is_authenticated and user.username == "admin" %}
+                  <a href="{% url 'deskovka_update' deskovka.pk %}" class="card-footer-item">Upravit</a>
+                {% endif %}
+              </footer>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Žádné deskové hry nenalezeny.</p>
+    {% endif %}
 
-{% if user.is_authenticated and user.username == 'admin' %}
-    <a href="{% url 'deskovka_create' %}">Přidat novou deskovou hru</a>
-{% endif %}
+    {% if user.is_authenticated and user.username == "admin" %}
+      <a class="button is-primary mt-4" href="{% url 'deskovka_create' %}">
+        Přidat novou deskovku
+      </a>
+    {% endif %}
+  </div>
+</section>
 {% endblock %}

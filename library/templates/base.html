@@ -1,78 +1,59 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="cs">
-
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
     <title>{% block title %}Databáze deskových her{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-
 <body>
 
-    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="{% url 'index' %}">
-                <strong>Deskovky</strong>
-            </a>
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
+<!-- Navigace -->
+<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="{% url 'index' %}">
+      <strong>Deskovky</strong>
+    </a>
+  </div>
+
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" href="{% url 'deskovka_list' %}">Deskovky</a>
+      <a class="navbar-item" href="{% url 'zanr_list' %}">Žánry</a>
+      <a class="navbar-item" href="{% url 'rozsireni_list' %}">Rozšíření</a>
+      <a class="navbar-item" href="{% url 'tvurci_list' %}">Tvůrci</a>
+      <a class="navbar-item" href="{% url 'vydavatelstvi_list' %}">Vydavatelství</a>
+    </div>
+
+    <div class="navbar-end">
+      {% if user.is_authenticated %}
+        <div class="navbar-item">
+          Přihlášen: <strong>{{ user.username }}</strong>
         </div>
+        <a class="navbar-item" href="{% url 'logout' %}">Odhlásit</a>
+      {% else %}
+        <a class="navbar-item" href="{% url 'login' %}">Přihlásit</a>
+        <a class="navbar-item" href="{% url 'register' %}">Registrovat</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
 
-        <div id="navbarMain" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="{% url 'deskovka_list' %}">Deskovky</a>
-                <a class="navbar-item" href="{% url 'zanr_list' %}">Žánry</a>
-                <a class="navbar-item" href="{% url 'rozsireni_list' %}">Rozšíření</a>
-                <a class="navbar-item" href="{% url 'tvurci_list' %}">Tvůrci</a>
-                <a class="navbar-item" href="{% url 'vydavatelstvi_list' %}">Vydavatelstvi</a>
-            </div>
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    {% if user.is_authenticated %}
-                        <div>Přihlášen: {{ user.username }}</div>
-                        <div class="buttons">
-                            <a class="button is-light" href="{% url 'logout' %}">Odhlásit</a>
-                        </div>
-                    {% else %}
-                        <div class="buttons">
-                            <a class="button is-light" href="{% url 'login' %}">Přihlásit</a>
-                            <a class="button is-primary" href="{% url 'register' %}"><strong>Registrovat</strong></a>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </nav>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-            if ($navbarBurgers.length > 0) {
-                $navbarBurgers.forEach( el => {
-                    el.addEventListener('click', () => {
-                        const target = el.dataset.target;
-                        const $target = document.getElementById(target);
-                        el.classList.toggle('is-active');
-                        $target.classList.toggle('is-active');
-                    });
-                });
-            }
-        });
-    </script>
+<!-- Obsah stránky -->
+<section class="section">
+  <div class="container">
+    {% block content %}
+    {% endblock %}
+  </div>
+</section>
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+<!-- Patička -->
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>&copy; {{ year }} Deskovky App</p>
+  </div>
+</footer>
 
-    <footer>
-        <hr>
-        <p>&copy; {{ year }} Deskovky App</p>
-    </footer>
 </body>
-
 </html>

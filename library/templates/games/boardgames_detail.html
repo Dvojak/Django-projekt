@@ -1,55 +1,101 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Detail deskové hry{% endblock %}
+{% block title %}{{ deskovka.nazev }}{% endblock %}
 
 {% block content %}
-<h2>{{ deskovka.nazev }}</h2>
+<section class="section">
+  <div class="container">
+    
+    <div class="columns is-vcentered">
+      <div class="column is-8">
+        <h1 class="title">{{ deskovka.nazev }}</h1>
+        {% if deskovka.alt %}
+          <p class="subtitle">({{ deskovka.alt }})</p>
+        {% endif %}
+      </div>
 
-{% if deskovka.fotografie %}
-    <img src="{{ deskovka.fotografie.url }}" alt="{{ deskovka.nazev }}" width="300">
-{% endif %}
+      {% if user.username == "admin" %}
+        <div class="column is-4 has-text-right">
+          <a href="{% url 'deskovka_update' deskovka.pk %}" class="button is-small is-info">Upravit</a>
+          <a href="{% url 'deskovka_delete' deskovka.pk %}" class="button is-small is-danger">Smazat</a>
+        </div>
+      {% endif %}
+    </div>
 
-<ul>
-    <li><strong>Alternativní název:</strong> {{ deskovka.alt }}</li>
-    <li><strong>Datum vydání:</strong> {{ deskovka.vydani }}</li>
-    <li><strong>Vydavatelstvi: </strong> 
-    {% for vydavatelstvo in deskovka.vydavatelstvi.all %}
-        {{ vydavatelstvo.Jmeno }}{% if not forloop.last %}, {% endif %}
-    {% empty %}
-        (žádné)
-    {% endfor %} </li>
-    <li><strong>Tvůrci: </strong> 
-    {% for tvurci in deskovka.designer.all %}
-        {{ tvurci.Jmeno }} {{ tvurci.Prijmeni }} - ({{ tvurci.role }}) {% if not forloop.last %}, {% endif %}
-    {% empty %}
-        (žádné)
-    {% endfor %} </li>
-    <li><strong>Žánry:</strong>
-    {% for zanr in deskovka.zanry.all %}
-        {{ zanr.nazev }}{% if not forloop.last %}, {% endif %}
-    {% empty %}
-        (žádné)
-    {% endfor %}
-    </li>
-    <li><strong>Minimální věk:</strong> {{ deskovka.minvek }}</li>
-    <li><strong>Délka hry:</strong> {{ deskovka.cas }} minut</li>
-    <li><strong>Počet hráčů:</strong> {{ deskovka.min_hracu }}–{{ deskovka.max_hracu }}</li>
-    <li><strong>Komplexita:</strong> {{ deskovka.get_komplexita_display }}</li>
-    <li><strong>Popis:</strong><br>{{ deskovka.popis|linebreaks }}</li>
-</ul>
+    <div class="columns">
+      <div class="column is-one-third">
+        {% if deskovka.fotografie %}
+          <figure class="image is-4by3">
+            <img src="{{ deskovka.fotografie.url }}" alt="{{ deskovka.nazev }}">
+          </figure>
+        {% else %}
+          <figure class="image is-4by3">
+            <img src="{% static 'images/placeholder.png' %}" alt="bez obrázku">
+          </figure>
+        {% endif %}
+      </div>
 
+      <div class="column">
+        <p><strong>Rok vydání:</strong> {{ deskovka.vydani }}</p>
+        <p><strong>Minimální věk:</strong> {{ deskovka.minvek }}</p>
+        <p><strong>Délka hry:</strong> {{ deskovka.cas }} minut</p>
+        <p><strong>Počet hráčů:</strong> {{ deskovka.min_hracu }}–{{ deskovka.max_hracu }}</p>
+        <p><strong>Komplexita:</strong> {{ deskovka.get_komplexita_display }}</p>
 
-{% if user.is_authenticated and user.username == 'admin' %}
-    <a href="{% url 'deskovka_update' deskovka.pk %}">Upravit</a> |
-    <a href="{% url 'deskovka_delete' deskovka.pk %}">Smazat</a>
-{% endif %}
-{% if user.is_authenticated %}
-    {% if uzivatel_hodnotil %}
-        <a href="{% url 'hodnoceni_add' deskovka.pk %}">Upravit hodnocení</a> |
-        <a href="{% url 'hodnoceni_delete' deskovka.pk %}">Smazat hodnocení</a>
-    {% else %}
-        <a href="{% url 'hodnoceni_add' deskovka.pk %}">Přidat hodnocení</a>
-    {% endif %}
-{% endif %}
-<a href="{% url 'deskovka_list' %}">Zpět na seznam</a>
+        <p><strong>Žánry:</strong>
+          {% for zanr in deskovka.zanry.all %}
+            <span class="tag is-info">{{ zanr.nazev }}</span>
+          {% endfor %}
+        </p>
+
+        <p><strong>Tvůrci:</strong>
+          {% for tvurce in deskovka.designer.all %}
+            <span class="tag is-warning">{{ tvurce.Jmeno }} {{ tvurce.Prijmeni }}</span>
+          {% endfor %}
+        </p>
+
+        <p><strong>Vydavatelství:</strong>
+          {% for vyd in deskovka.vydavatelstvi.all %}
+            <span class="tag is-link">{{ vyd.Jmeno }}</span>
+          {% endfor %}
+        </p>
+
+        <hr>
+        <p>{{ deskovka.popis }}</p>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="box">
+      <h2 class="title is-5">Hodnocení</h2>
+
+      {% for h in deskovka.hodnoceni_set.all %}
+        <article class="message is-light">
+          <div class="message-header">
+            <p><strong>{{ h.uzivatel.username }}</strong> – {{ h.hodnoceni }}/10</p>
+            {% if user == h.uzivatel %}
+              <div>
+                <a href="{% url 'hodnoceni_add' h.pk %}" class="button is-small is-info">Upravit</a>
+                <a href="{% url 'hodnoceni_delete' h.pk %}" class="button is-small is-danger">Smazat</a>
+              </div>
+            {% endif %}
+          </div>
+          <div class="message-body">
+            {{ h.recenze }}
+          </div>
+        </article>
+      {% empty %}
+        <p>Žádná hodnocení zatím nejsou.</p>
+      {% endfor %}
+
+      {% if user.is_authenticated %}
+        <a href="{% url 'hodnoceni_add' deskovka.pk %}" class="button is-primary is-fullwidth mt-4">
+          Přidat hodnocení
+        </a>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
 {% endblock %}

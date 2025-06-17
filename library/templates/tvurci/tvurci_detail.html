@@ -18,17 +18,15 @@
 
 <hr>
 
-{% if tvurce.navrhovane_hry.exists %}
-    <h3>Navržené deskové hry:</h3>
-    <ul>
-        {% for hra in tvurce.navrhovane_hry.all %}
-            <li>
-                <a href="{% url 'deskovka_detail' hra.pk %}">{{ hra.nazev }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+{% if tvurce.deskovky.all %}
+  <h3>Navržené deskové hry:</h3>
+  <ul>
+    {% for hra in tvurce.deskovky.all %}
+      <li><a href="{% url 'deskovka_detail' hra.pk %}">{{ hra.nazev }}</a></li>
+    {% endfor %}
+  </ul>
 {% else %}
-    <p>Žádné deskové hry zatím nenavrhl.</p>
+  <p>Tento tvůrce zatím nenavrhl žádné deskové hry.</p>
 {% endif %}
 
 <hr>

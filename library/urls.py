@@ -33,6 +33,9 @@ urlpatterns = [
     path('vydavatelstvi/<int:pk>/delete/', views.vydavatelstvi_delete, name='vydavatelstvi_delete'),
     path('deskovka/<int:hra_id>/hodnoceni/', views.add_change_review, name='hodnoceni_add'),
     path('deskovka/<int:hra_id>/hodnoceni/smazat/', views.review_delete, name='hodnoceni_delete'),
+    path('deskovka/<int:hra_id>/hodnoceni/vse/', views.review_deskovky, name='hodnoceni_list'),
+
+
 
 
 

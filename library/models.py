@@ -8,7 +8,7 @@ from django.db import models
 class Deskovka(models.Model):
     nazev = models.CharField(max_length=80, verbose_name="Jméno deskové hry", help_text="Zadejte jméno deskové hry", default='',
             error_messages={'blank':'Jméno deskové hry musí být vyplněno'})
-    alt = models.CharField(max_length=80, verbose_name="Alternativní jméno deskové hry", help_text="Zadejte alternativní jméno deskové hry",default='')
+    alt = models.CharField(max_length=80, verbose_name="Alternativní jméno deskové hry", help_text="Zadejte alternativní jméno deskové hry",default='',blank=True, null=True,)
     zanry = models.ManyToManyField('Zanr',related_name='deskovky',verbose_name='Žánry deskové hry',help_text='Vyberte jeden nebo více žánrů',blank=True)
     designer = models.ManyToManyField('Tvurci', related_name='deskovky', verbose_name='Tvůrci deskové hry', help_text='Vyberte jednoho nebo více tvůrců', blank=True)
     vydavatelstvi = models.ManyToManyField('Vydavatelstvi', related_name='deskovky',verbose_name='Vydavatelství', help_text='Vyberte jméno vydavatelství deskové hry', blank=True)
@@ -20,7 +20,7 @@ class Deskovka(models.Model):
     KOMPLEXITA = [(0, ''), (1, '*'), (2, '**'), (3, '***'), (4, '****'), (5, '*****'), ]
     komplexita = models.PositiveIntegerField(choices=KOMPLEXITA, verbose_name="Komplexita hry", default=3)
     fotografie = models.ImageField(upload_to='deskovky',verbose_name='Fotografie',blank=True,null=True)
-    popis = models.TextField(verbose_name='Popis', help_text='Zadejte popis deskové hry')
+    popis = models.TextField(verbose_name='Popis', help_text='Zadejte popis deskové hry',blank=True, null=True)
 
     class Meta:
         verbose_name = 'Deskovka'
