@@ -1,16 +1,37 @@
 {% extends 'base.html' %}
-{% block title %}Upravit vydavatelství{% endblock %}
+{% load static %}
+{% block title %}Upravit vydavatelstvi{% endblock %}
 
 {% block content %}
-<h2>Upravit vydavatelství: {{ vydavatelstvi.Jmeno }}</h2>
+<section class="section">
+  <div class="container">
+    <h2 class="title is-3">Upravit vydavatelstvi</h2>
 
-<form method="post">
-    {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
 
-    <button type="submit">Uložit změny</button>
-    <a href="{% url 'vydavatelstvi_detail' vydavatelstvi.pk %}">Zpět na detail</a>
-</form>
+      <div class="box">
+        {% for field in form %}
+          <div class="field">
+            <label class="label">{{ field.label }}</label>
+            <div class="control">
+              {{ field }}
+            </div>
+            {% if field.help_text %}
+              <p class="help is-info">{{ field.help_text }}</p>
+            {% endif %}
+            {% for error in field.errors %}
+              <p class="help is-danger">{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="buttons">
+        <button type="submit" class="button is-primary">Uložit</button>
+        <a href="{% url 'vydavatelstvi_list' %}" class="button is-light">Zpět na seznam</a>
+      </div>
+    </form>
+  </div>
+</section>
 {% endblock %}

@@ -1,12 +1,20 @@
 {% extends 'base.html' %}
-{% block title %}Smazat vydavatelství{% endblock %}
+{% block title %}Smazat žánr{% endblock %}
 
 {% block content %}
-<h2>Opravdu chcete smazat vydavatelství: "{{ vydavatelstvi.Jmeno }}"?</h2>
+<section class="section">
+  <div class="container">
+    <div class="notification is-danger">
+      <h2 class="title is-4">Opravdu chcete smazat vydavatelstvi: <strong>"{{ vydavatelstvi.Jmeno }}"</strong>?</h2>
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Ano, smazat</button>
-    <a href="{% url 'vydavatelstvi_detail' vydavatelstvi.pk %}">Ne, zpět</a>
-</form>
+      <form method="post">
+        {% csrf_token %}
+        <div class="buttons mt-4">
+          <button type="submit" class="button is-light">Ano, smazat</button>
+          <a href="{% url 'vydavatelstvi_list' deskovka.pk %}" class="button is-light">Ne, zpět</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
 {% endblock %}

@@ -1,12 +1,20 @@
 {% extends 'base.html' %}
-{% block title %}Smazat tvůrce{% endblock %}
+{% block title %}Smazat žánr{% endblock %}
 
 {% block content %}
-<h2>Opravdu chcete smazat tvůrce: "{{ tvurce.jmeno }}"?</h2>
+<section class="section">
+  <div class="container">
+    <div class="notification is-danger">
+      <h2 class="title is-4">Opravdu chcete smazat tvůrce: <strong>"{{ tvurci.Jmeno }} {{ tvurci.Prijmeni }}" </strong>?</h2>
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Ano, smazat</button>
-    <a href="{% url 'tvurci_detail' tvurce.pk %}">Ne, zpět</a>
-</form>
+      <form method="post">
+        {% csrf_token %}
+        <div class="buttons mt-4">
+          <button type="submit" class="button is-light">Ano, smazat</button>
+          <a href="{% url 'tvurci_detail' deskovka.pk %}" class="button is-light">Ne, zpět</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
 {% endblock %}

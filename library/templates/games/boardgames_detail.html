@@ -14,12 +14,7 @@
         {% endif %}
       </div>
 
-      {% if user.username == "admin" %}
-        <div class="column is-4 has-text-right">
-          <a href="{% url 'deskovka_update' deskovka.pk %}" class="button is-small is-info">Upravit</a>
-          <a href="{% url 'deskovka_delete' deskovka.pk %}" class="button is-small is-danger">Smazat</a>
-        </div>
-      {% endif %}
+
     </div>
 
     <div class="columns">
@@ -62,6 +57,12 @@
 
         <hr>
         <p>{{ deskovka.popis }}</p>
+              {% if user.username == "admin" %}
+        <div class="column is-4 has-text-right">
+          <a href="{% url 'deskovka_update' deskovka.pk %}" class="button is-small is-info">Upravit</a>
+          <a href="{% url 'deskovka_delete' deskovka.pk %}" class="button is-small is-danger">Smazat</a>
+        </div>
+      {% endif %}
       </div>
     </div>
 
