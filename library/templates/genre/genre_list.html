@@ -2,44 +2,63 @@
 {% block title %}Seznam žánrů{% endblock %}
 
 {% block content %}
-<h2>Seznam žánrů</h2>
+<section class="section">
+  <div class="container">
+    <h2 class="title is-3">Seznam žánrů</h2>
 
-<ul>
-{% for zanr in zanry %}
-    <li>
-        <strong>{{ zanr.nazev }}</strong>
+    {% if zanry %}
+      <div class="columns is-multiline">
+        {% for zanr in zanry %}
+          <div class="column is-half">
+            <div class="box">
+              <h3 class="title is-5 has-text-primary">{{ zanr.nazev }}</h3>
 
-        {% with deskovky=zanr.deskovky.all %}
-        {% if deskovky %}
-            <p><em>Deskové hry:</em></p>
-            <ul>
-                {% for deskovka in deskovky %}
+              {% with deskovky=zanr.deskovky.all %}
+              {% if deskovky %}
+                <p class="has-text-weight-semibold">Deskové hry:</p>
+                <ul class="mb-2">
+                  {% for deskovka in deskovky %}
                     <li>
-                        <a href="{% url 'deskovka_detail' deskovka.pk %}">{{ deskovka.nazev }}</a>
+                      <a href="{% url 'deskovka_detail' deskovka.pk %}" class="has-text-link">
+                        {{ deskovka.nazev }}
+                      </a>
                     </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        {% endwith %}
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              {% endwith %}
 
-        {% with rozsireni=zanr.rozsireni.all %}
-        {% if rozsireni %}
-            <p><em>Rozšíření:</em></p>
-            <ul>
-                {% for rozs in rozsireni %}
+              {% with rozsireni=zanr.rozsireni.all %}
+              {% if rozsireni %}
+                <p class="has-text-weight-semibold">Rozšíření:</p>
+                <ul>
+                  {% for rozs in rozsireni %}
                     <li>
-                        <a href="{% url 'rozsireni_detail' rozs.pk %}">{{ rozs.nazev }}</a>
+                      <a href="{% url 'rozsireni_detail' rozs.pk %}" class="has-text-link">
+                        {{ rozs.nazev }}
+                      </a>
                     </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        {% endwith %}
-    </li>
-{% empty %}
-    <li>Žádné žánry nebyly nalezeny.</li>
-{% endfor %}
-</ul>
-{% if user.is_authenticated and user.username == 'admin' %}
-    <a href="{% url 'zanr_create' %}">Přidat nový žánr</a>
-{% endif %}
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              {% endwith %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="notification is-warning">
+        Žádné žánry nebyly nalezeny.
+      </div>
+    {% endif %}
+
+    {% if user.is_authenticated and user.username == 'admin' %}
+      <div class="has-text-centered mt-4">
+        <a href="{% url 'zanr_create' %}" class="button is-success">
+          Přidat nový žánr
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
 {% endblock %}

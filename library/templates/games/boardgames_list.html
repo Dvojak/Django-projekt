@@ -15,26 +15,27 @@
               <div class="card-image">
                 {% if deskovka.fotografie %}
                   <figure class="image is-4by3">
+                    <a href="{% url 'deskovka_detail' deskovka.pk %}">
                     <img src="{{ deskovka.fotografie.url }}" alt="{{ deskovka.nazev }}">
+                    </a>
                   </figure>
                 {% else %}
                   <figure class="image is-4by3">
+                    <a href="{% url 'deskovka_detail' deskovka.pk %}">
                     <img src="{% static 'images/placeholder.png' %}" alt="bez obrázku">
+                    </a>
+                    
                   </figure>
                 {% endif %}
               </div>
               <div class="card-content">
-                <p class="title is-5">{{ deskovka.nazev }}</p>
+                <p class="title is-5"><a href="{% url 'deskovka_detail' deskovka.pk %}">
+                {{ deskovka.nazev }}
+                </a></p>
                 {% if deskovka.alt %}
                   <p class="subtitle is-6">({{ deskovka.alt }})</p>
                 {% endif %}
               </div>
-              <footer class="card-footer">
-                <a href="{% url 'deskovka_detail' deskovka.pk %}" class="card-footer-item">Detail</a>
-                {% if user.is_authenticated and user.username == "admin" %}
-                  <a href="{% url 'deskovka_update' deskovka.pk %}" class="card-footer-item">Upravit</a>
-                {% endif %}
-              </footer>
             </div>
           </div>
         {% endfor %}

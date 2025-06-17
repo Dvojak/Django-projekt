@@ -1,33 +1,59 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}Seznam rozšíření{% endblock %}
 
 {% block content %}
-<h2>Seznam rozšíření</h2>
+<section class="section">
+  <div class="container">
+    <h2 class="title is-3">Seznam rozšíření</h2>
 
-<ul>
-    {% for item in rozsireni %}
-        <li>
-            <strong><a href="{% url 'rozsireni_detail' item.pk %}">{{ item.nazev }}</a></strong>
-            {% if item.deskovka %}
-                – k deskové hře:
-                <a href="{% url 'deskovka_detail' item.deskovka.pk %}">
-                    {{ item.deskovka.nazev }}
+    <div class="columns is-multiline">
+      {% for item in rozsireni %}
+        <div class="column is-one-third">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                {% if item.fotografie %}
+                 <a href="{% url 'rozsireni_detail' item.pk %}">
+                    <img src="{{ item.fotografie.url }}" alt="{{ item.nazev }}">
+                 </a>
+                  
+                {% else %}
+                <a href="{% url 'rozsireni_detail' item.pk %}">
+                 <img src="{% static 'images/placeholder.png' %}" alt="bez obrázku">
                 </a>
-            {% else %}
-                – Nepřiřazeno k žádné deskovce
-            {% endif %}
+                 
+                {% endif %}
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title is-5">
+                <a href="{% url 'rozsireni_detail' item.pk %}">
+                  {{ item.nazev }}
+                </a>
+              </p>
+              {% if item.alt %}
+                <p class="subtitle is-6">({{ item.alt }})</p>
+              {% endif %}
+              {% if item.deskovka %}
+                <p class="has-text-grey-dark">
+                  K deskové hře: <a href="{% url 'deskovka_detail' item.deskovka.pk %}">{{ item.deskovka.nazev }}</a>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p>Žádná rozšíření nebyla nalezena.</p>
+      {% endfor %}
+    </div>
 
-            {% if item.fotografie %}
-                <br>
-                <img src="{{ item.fotografie.url }}" alt="{{ item.nazev }}" width="150">
-            {% endif %}
-        </li>
-    {% empty %}
-        <li>Žádná rozšíření nebyla nalezena.</li>
-    {% endfor %}
-</ul>
-
-{% if user.is_authenticated and user.username == 'admin' %}
-<a href="{% url 'rozsireni_create' %}">Přidat nové rozšíření</a>
-{% endif %}
+    {% if user.is_authenticated and user.username == 'admin' %}
+      <div class="mt-4">
+        <a class="button is-primary" href="{% url 'rozsireni_create' %}">Přidat nové rozšíření</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
 {% endblock %}

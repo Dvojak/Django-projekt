@@ -12,7 +12,7 @@ class Deskovka(models.Model):
     zanry = models.ManyToManyField('Zanr',related_name='deskovky',verbose_name='Žánry deskové hry',help_text='Vyberte jeden nebo více žánrů',blank=True)
     designer = models.ManyToManyField('Tvurci', related_name='deskovky', verbose_name='Tvůrci deskové hry', help_text='Vyberte jednoho nebo více tvůrců', blank=True)
     vydavatelstvi = models.ManyToManyField('Vydavatelstvi', related_name='deskovky',verbose_name='Vydavatelství', help_text='Vyberte jméno vydavatelství deskové hry', blank=True)
-    vydani = models.IntegerField(blank=True,null=True, verbose_name='Datum vydání', validators=[MinValueValidator(1900), MaxValueValidator(2100)])
+    vydani = models.IntegerField(blank=True,null=True, verbose_name='Datum vydání')
     minvek = models.IntegerField(verbose_name='Minimální věk', help_text='Zadejte minimální věk', validators=[MinValueValidator(0), MaxValueValidator(99)],default=0)
     cas = models.IntegerField(verbose_name='Délka hry', help_text='Zadejte délku hry v minutách', validators=[MinValueValidator(0), MaxValueValidator(999)], default=0)
     min_hracu = models.IntegerField(verbose_name='Minimální počet hráčů', help_text='Zadejte minimální počet hráčů', validators=[MinValueValidator(1), MaxValueValidator(99)],default=1)
@@ -61,7 +61,7 @@ class Rozsireni(models.Model):
     zanry = models.ManyToManyField('Zanr',related_name='rozsireni',verbose_name='Žánry deskové hry',help_text='Vyberte jeden nebo více žánrů',blank=True)
     designer = models.ManyToManyField('Tvurci', related_name='rozsireni', verbose_name='Tvůrci deskové hry', help_text='Vyberte jednoho nebo více tvůrců', blank=True)
     vydavatelstvi = models.ManyToManyField('Vydavatelstvi', related_name='rozsireni',verbose_name='Vydavatelství', help_text='Vyberte jméno vydavatelství deskové hry', blank=True)
-    vydani = models.IntegerField(blank=True,null=True, verbose_name='Datum vydání', validators=[MinValueValidator(1900), MaxValueValidator(2100)])
+    vydani = models.IntegerField(blank=True,null=True, verbose_name='Datum vydání')
     popis = models.TextField(verbose_name='Popis', help_text='Zadejte popis rozšíření')
     fotografie = models.ImageField(upload_to='rozsireni',verbose_name='Fotografie',blank=True,null=True)
 

@@ -1,43 +1,61 @@
 {% extends 'base.html' %}
 {% block title %}Seznam tvůrců{% endblock %}
-
 {% block content %}
-<h2>Seznam tvůrců</h2>
 
-<!-- Filtrovací formulář -->
-<form method="get">
-    <label for="role">Filtrovat podle role:</label>
-    <select name="role" id="role" onchange="this.form.submit()">
-        <option value="">-- Všechny role --</option>
-        {% for value, label in role_choices.items %}
-            <option value="{{ value }}" {% if value == role %}selected{% endif %}>
-                {{ label }}
-            </option>
-        {% endfor %}
-    </select>
-</form>
+<section class="section">
+  <div class="container">
+    <h2 class="title is-3">Seznam tvůrců</h2>
 
-<hr>
+    <!-- Filtrovací formulář -->
+    <form method="get" class="field is-grouped mb-5">
+      <div class="control">
+        <label for="role" class="label">Filtrovat podle role:</label>
+        <div class="select">
+          <select name="role" id="role" onchange="this.form.submit()">
+            <option value="">-- Všechny role --</option>
+            {% for value, label in role_choices.items %}
+              <option value="{{ value }}" {% if value == role %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </form>
 
-<ul>
-    {% for tvurce in tvurci %}
-        <li>
-            <strong><a href="{% url 'tvurci_detail' tvurce.pk %}">{{ tvurce.Jmeno }} {{ tvurce.Prijmeni }}</a> </strong> – {{ tvurce.get_role_display }}
+    {% if tvurci %}
+      <div class="content">
+        <ul>
+          {% for tvurce in tvurci %}
+            <li class="mb-4">
+              <strong>
+                <a href="{% url 'tvurci_detail' tvurce.pk %}">
+                  {{ tvurce.Jmeno }} {{ tvurce.Prijmeni }}
+                </a>
+              </strong> – {{ tvurce.get_role_display }}
 
-            {% if tvurce.navrhovane_hry.exists %}
+              {% if tvurce.navrhovane_hry.exists %}
                 <ul>
-                    {% for hra in tvurce.navrhovane_hry.all %}
-                        <li>
-                            <a href="{% url 'deskovka_detail' hra.pk %}">{{ hra.nazev }}</a>
-                        </li>
-                    {% endfor %}
+                  {% for hra in tvurce.navrhovane_hry.all %}
+                    <li>
+                      <a href="{% url 'deskovka_detail' hra.pk %}">{{ hra.nazev }}</a>
+                    </li>
+                  {% endfor %}
                 </ul>
-            {% endif %}
-        </li>
-    {% empty %}
-        <li>Žádní tvůrci nebyli nalezeni.</li>
-    {% endfor %}
-</ul>
-<a href="{% url 'tvurci_create' %}">Přidat nového tvůrce</a>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% else %}
+      <p>Žádní tvůrci nebyli nalezeni.</p>
+    {% endif %}
+
+    {% if user.is_authenticated and user.username == 'admin' %}
+      <div class="mt-5">
+        <a class="button is-primary" href="{% url 'tvurci_create' %}">Přidat nového tvůrce</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
 
 {% endblock %}
+

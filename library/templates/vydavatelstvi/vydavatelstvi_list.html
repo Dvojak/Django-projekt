@@ -2,29 +2,66 @@
 {% block title %}Seznam vydavatelství{% endblock %}
 
 {% block content %}
-<h2>Seznam vydavatelství</h2>
+<section class="section">
+  <div class="container">
+    <h2 class="title is-3">Seznam vydavatelství</h2>
 
-<ul>
-    {% for vyd in vydavatelstvi_list %}
-        <li>
-            <strong><a href="{% url 'vydavatelstvi_detail' vyd.pk %}">{{ vyd.Jmeno }}</a></strong>
+    {% if vydavatelstvi_list %}
+      <div class="columns is-multiline">
+        {% for vyd in vydavatelstvi_list %}
+          <div class="column is-half">
+            <div class="box">
+              <h3 class="title is-5 has-text-primary">
+                {{ vyd.Jmeno }}
+              </h3>
 
-            {% if vyd.deskovka_set.exists %}
+              {% with deskovky=vyd.deskovky.all %}
+              {% if deskovky %}
+                <p class="has-text-weight-semibold">Deskové hry:</p>
                 <ul>
-                    {% for hra in vyd.deskovka_set.all %}
-                        <li>
-                            <a href="{% url 'deskovka_detail' hra.pk %}">{{ hra.Jmeno }}</a>
-                        </li>
-                    {% endfor %}
+                  {% for hra in deskovky %}
+                    <li>
+                      <a href="{% url 'deskovka_detail' hra.pk %}" class="has-text-link">
+                        {{ hra.nazev }}
+                      </a>
+                    </li>
+                  {% endfor %}
                 </ul>
-            {% endif %}
-        </li>
-    {% empty %}
-        <li>Žádné vydavatelství zatím neexistuje.</li>
-    {% endfor %}
-</ul>
-{% if user.is_authenticated and user.username == 'admin' %}
-    <a href="{% url 'vydavatelstvi_create' %}">Přidat nové vydavatelství</a>
-{% endif %}
+              {% endif %}
+              {% endwith %}
 
+
+              {% with rozsireni=vyd.rozsireni.all %}
+              {% if rozsireni %}
+                <p class="has-text-weight-semibold">Deskové hry:</p>
+                <ul>
+                  {% for hra in rozsireni %}
+                    <li>
+                      <a href="{% url 'rozsireni_detail' hra.pk %}" class="has-text-link">
+                        {{ hra.nazev }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              {% endwith %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="notification is-warning">
+        Žádné vydavatelství zatím neexistuje.
+      </div>
+    {% endif %}
+
+    {% if user.is_authenticated and user.username == 'admin' %}
+      <div class="has-text-centered mt-4">
+        <a href="{% url 'vydavatelstvi_create' %}" class="button is-success">
+          Přidat nové vydavatelství
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
 {% endblock %}

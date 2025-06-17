@@ -1,55 +1,81 @@
 {% extends 'base.html' %}
-{% block title %}Detail rozšíření{% endblock %}
+{% load static %}
+
+{% block title %}{{ rozsireni.nazev }}{% endblock %}
 
 {% block content %}
-<h2>{{ rozsireni.nazev }}</h2>
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-one-third">
+        {% if rozsireni.fotografie %}
+          <figure class="image is-4by3">
+            <img src="{{ rozsireni.fotografie.url }}" alt="{{ rozsireni.nazev }}">
+          </figure>
+        {% else %}
+          <figure class="image is-4by3">
+            <img src="{% static 'images/placeholder.png' %}" alt="bez obrázku">
+          </figure>
+        {% endif %}
+      </div>
 
-{% if rozsireni.fotografie %}
-    <img src="{{ rozsireni.fotografie.url }}" alt="{{ rozsireni.nazev }}" width="300">
-{% endif %}
+      <div class="column">
+        <h1 class="title">{{ rozsireni.nazev }}</h1>
+        {% if rozsireni.alt %}
+          <h2 class="subtitle">({{ rozsireni.alt }})</h2>
+        {% endif %}
 
-<ul>
-    {% if rozsireni.deskovka %}
-        <li><strong>Deskova hra:</strong>
+        {% if rozsireni.deskovka %}
+          <p><strong>K deskové hře:</strong>
             <a href="{% url 'deskovka_detail' rozsireni.deskovka.pk %}">
-                {{ rozsireni.deskovka.nazev }}
+              {{ rozsireni.deskovka.nazev }}
             </a>
-        </li>
-    {% else %}
-        <li><strong>Deskova hra:</strong> (nepřiřazeno)</li>
-    {% endif %}
-        <li><strong>Vydavatelstvi: </strong> 
-    {% for vydavatelstvo in rozsireni.vydavatelstvi.all %}
-        {{ vydavatelstvo.Jmeno }}{% if not forloop.last %}, {% endif %}
-    {% empty %}
-        (žádné)
-    {% endfor %} </li>
-    <li><strong>Tvůrci: </strong> 
-    {% for tvurci in rozsireni.designer.all %}
-        {{ tvurci.Jmeno }} {{ tvurci.Prijmeni }} - ({{ tvurci.role }}) {% if not forloop.last %}, {% endif %}
-    {% empty %}
-        (žádné)
-    {% endfor %} </li>
-    <li><strong>Žánry:</strong>
-    {% for zanr in rozsireni.zanry.all %}
-        {{ zanr.nazev }}{% if not forloop.last %}, {% endif %}
-    {% empty %}
-        (žádné)
-    {% endfor %}
-    </li>
-    {% if rozsireni.vydani %}
-        <li><strong>Rok vydání:</strong> {{ rozsireni.vydani }}</li>
-    {% endif %}
+          </p>
+        {% endif %}
 
-    <li><strong>Popis:</strong><br>{{ rozsireni.popis|linebreaks }}</li>
-</ul>
+        {% if rozsireni.vydani %}
+          <p><strong>Rok vydání:</strong> {{ rozsireni.vydani }}</p>
+        {% endif %}
 
+        {% if rozsireni.popis %}
+          <p><strong>Popis:</strong> {{ rozsireni.popis }}</p>
+        {% endif %}
 
-{% if user.is_authenticated and user.username == 'admin' %}
-<a href="{% url 'rozsireni_update' rozsireni.pk %}">Upravit</a> |
-<a href="{% url 'rozsireni_delete' rozsireni.pk %}">Smazat</a>
-{% endif %} |
-{% if user.is_authenticated %}
+        {% if rozsireni.zanry.all %}
+          <p><strong>Žánry:</strong>
+            {% for zanr in rozsireni.zanry.all %}
+              <span class="tag is-info is-light">{{ zanr.nazev }}</span>
+            {% empty %}
+              <span>Žádné</span>
+            {% endfor %}
+          </p>
+        {% endif %}
 
-<a href="{% url 'rozsireni_list' %}">Zpět na seznam</a>
+        {% if rozsireni.designer.all %}
+          <p><strong>Tvůrci:</strong>
+            {% for tvurce in rozsireni.designer.all %}
+              {{ tvurce.Jmeno }} {{ tvurce.Prijmeni }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </p>
+        {% endif %}
+
+        {% if rozsireni.vydavatelstvi.all %}
+          <p><strong>Vydavatelství:</strong>
+            {% for vyd in rozsireni.vydavatelstvi.all %}
+              {{ vyd.Jmeno }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </p>
+        {% endif %}
+
+        <div class="mt-4">
+          {% if user.is_authenticated and user.username == 'admin' %}
+            <a class="button is-warning is-small" href="{% url 'rozsireni_update' rozsireni.pk %}">Upravit</a>
+            <a class="button is-danger is-small" href="{% url 'rozsireni_delete' rozsireni.pk %}">Smazat</a>
+          {% endif %}
+          <a class="button is-link is-light is-small" href="{% url 'rozsireni_list' %}">Zpět na seznam</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}
