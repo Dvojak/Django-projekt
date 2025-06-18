@@ -1,37 +1,51 @@
 {% extends 'base.html' %}
-{% block title %}{{ tvurce.jmeno }} – detail{% endblock %}
+{% block title %}{{ tvurce.Jmeno }} – detail{% endblock %}
 
 {% block content %}
-<h2>{{ tvurce.Jmeno }} {{ tvurce.Prijmeni }}</h2>
-{% if tvurci.fotografie %}
-    <p>
-        <strong>Fotografie:</strong><br>
-        <img src="{{ tvurci.fotografie.url }}" alt="{{ tvurci.Jmeno }}" width="200">
-    </p>
-{% endif %}
-<p><strong>Role:</strong> {{ tvurce.get_role_display }}</p>
-{% if tvurce.zivotopis %}
-    <p><strong>Životopis:</strong><br>{{ tvurci.zivotopis|linebreaks }}</p>
-{% endif %}
+<section class="section">
+  <div class="container">
+    <div class="box">
+      <div class="columns">
+        {% if tvurce.fotografie %}
+        <div class="column is-one-third">
+          <figure class="image is-3by4">
+            <img src="{{ tvurce.fotografie.url }}" alt="{{ tvurce.Jmeno }}">
+          </figure>
+        </div>
+        {% endif %}
 
+        <div class="column">
+          <h1 class="title is-3">{{ tvurce.Jmeno }} {{ tvurce.Prijmeni }}</h1>
+          <p class="subtitle is-5"><strong>Role:</strong> {{ tvurce.get_role_display }}</p>
 
+          {% if tvurce.zivotopis %}
+          <div class="content">
+            <p><strong>Životopis:</strong></p>
+            <p>{{ tvurce.zivotopis|linebreaks }}</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
 
-<hr>
+    <div class="box">
+      {% if tvurce.deskovky.all %}
+        <h2 class="title is-4">Navržené deskové hry</h2>
+        <ul>
+          {% for hra in tvurce.deskovky.all %}
+            <li><a class="has-text-link" href="{% url 'deskovka_detail' hra.pk %}">{{ hra.nazev }}</a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="has-text-grey">Tento tvůrce zatím nenavrhl žádné deskové hry.</p>
+      {% endif %}
+    </div>
 
-{% if tvurce.deskovky.all %}
-  <h3>Navržené deskové hry:</h3>
-  <ul>
-    {% for hra in tvurce.deskovky.all %}
-      <li><a href="{% url 'deskovka_detail' hra.pk %}">{{ hra.nazev }}</a></li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Tento tvůrce zatím nenavrhl žádné deskové hry.</p>
-{% endif %}
-
-<hr>
-<a href="{% url 'tvurci_update' tvurce.pk %}">Upravit</a> |
-<a href="{% url 'tvurci_delete' tvurce.pk %}">Smazat</a> |
-<a href="{% url 'tvurci_list' %}">Zpět na seznam</a>
+    <div class="buttons">
+      <a class="button is-warning is-light" href="{% url 'tvurci_update' tvurce.pk %}">Upravit</a>
+      <a class="button is-danger is-light" href="{% url 'tvurci_delete' tvurce.pk %}">Smazat</a>
+      <a class="button is-link is-light" href="{% url 'tvurci_list' %}">Zpět na seznam</a>
+    </div>
+  </div>
+</section>
 {% endblock %}
- 

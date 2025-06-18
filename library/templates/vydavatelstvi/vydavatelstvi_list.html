@@ -44,6 +44,7 @@
               {% endif %}
               {% endwith %}
                 </ul>
+                <a href="{% url 'vydavatelstvi_delete' vyd.pk %}" class="button  is-danger is-small">Smazat</a>
             </div>
           </div>
         {% endfor %}

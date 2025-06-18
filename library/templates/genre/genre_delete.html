@@ -11,7 +11,7 @@
         {% csrf_token %}
         <div class="buttons mt-4">
           <button type="submit" class="button is-light">Ano, smazat</button>
-          <a href="{% url 'zanr_list' deskovka.pk %}" class="button is-light">Ne, zpět</a>
+          <a href="{% url 'zanr_list' %}" class="button is-light">Ne, zpět</a>
         </div>
       </form>
     </div>
