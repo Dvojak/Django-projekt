@@ -37,34 +37,25 @@
           <p><strong>Rok vydání:</strong> {{ rozsireni.vydani }}</p>
         {% endif %}
 
-        {% if rozsireni.popis %}
+        <p><strong>Žánry:</strong>
+          {% for zanr in rozsireni.zanry.all %}
+            <span class="tag is-info">{{ zanr.nazev }}</span>
+          {% endfor %}
+        </p>
+
+        <p><strong>Tvůrci:</strong>
+          {% for tvurce in rozsireni.designer.all %}
+            <span class="tag is-warning">{{ tvurce.Jmeno }} {{ tvurce.Prijmeni }}</span>
+          {% endfor %}
+        </p>
+
+        <p><strong>Vydavatelství:</strong>
+          {% for vyd in rozsireni.vydavatelstvi.all %}
+            <span class="tag is-link">{{ vyd.Jmeno }}</span>
+          {% endfor %}
+        </p>
+                {% if rozsireni.popis %}
           <p><strong>Popis:</strong> {{ rozsireni.popis }}</p>
-        {% endif %}
-
-        {% if rozsireni.zanry.all %}
-          <p><strong>Žánry:</strong>
-            {% for zanr in rozsireni.zanry.all %}
-              <span class="tag is-info is-light">{{ zanr.nazev }}</span>
-            {% empty %}
-              <span>Žádné</span>
-            {% endfor %}
-          </p>
-        {% endif %}
-
-        {% if rozsireni.designer.all %}
-          <p><strong>Tvůrci:</strong>
-            {% for tvurce in rozsireni.designer.all %}
-              {{ tvurce.Jmeno }} {{ tvurce.Prijmeni }}{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-          </p>
-        {% endif %}
-
-        {% if rozsireni.vydavatelstvi.all %}
-          <p><strong>Vydavatelství:</strong>
-            {% for vyd in rozsireni.vydavatelstvi.all %}
-              {{ vyd.Jmeno }}{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-          </p>
         {% endif %}
 
         <div class="mt-4">
