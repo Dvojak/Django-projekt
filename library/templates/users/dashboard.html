@@ -2,26 +2,119 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<h2>Vítej, {{ user.username }}!</h2>
+<section class="section">
+  <div class="container">
 
-<ul>
-    <li><a href="{% url 'deskovka_list' %}">Seznam deskových her</a></li>
-    <li><a href="{% url 'rozsireni_list' %}">Seznam rozšíření</a></li>
-    <li><a href="{% url 'zanr_list' %}">Seznam žánrů</a></li>
-    <li><a href="{% url 'tvurci_list' %}">Seznam tvůrců</a></li>
-    <li><a href="{% url 'vydavatelstvi_list' %}">Seznam vydavatelství</a></li>
-</ul>
+    <!-- Vítací box pro všechny -->
+    <div class="box has-background-light">
+      <h1 class="title is-3">Vítej zpět, {{ user.username }}!</h1>
+      <p class="subtitle is-5">Rád tě tu vidím.</p>
+    </div>
 
-{% if user.username == 'admin' %}
-    <h3>Administrace</h3>
-    <ul>
-        <li><a href="{% url 'deskovka_create' %}">Přidat novou deskovku</a></li>
-        <li><a href="{% url 'rozsireni_create' %}">Přidat nové rozšíření</a></li>
-        <li><a href="{% url 'zanr_create' %}">Přidat nový žánr</a></li>
-        <li><a href="{% url 'tvurci_create' %}">Přidat tvůrce</a></li>
-        <li><a href="{% url 'vydavatelstvi_create' %}">Přidat vydavatelství</a></li>
-    </ul>
-{% endif %}
+    <!-- ADMIN sekce -->
+    {% if user.username == 'admin' %}
+    <div class="columns is-multiline">
+      <div class="column is-full">
+        <h2 class="title is-4">Administrace</h2>
+      </div>
 
-<p><a href="{% url 'logout' %}">Odhlásit se</a></p>
+      <div class="column is-one-third">
+        <div class="card">
+          <div class="card-content">
+            <p class="title is-5"><a href="{% url 'deskovka_create' %}">Přidat deskovou hru</a></p>
+            <p>Nová základní hra do systému.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="card">
+          <div class="card-content">
+            <p class="title is-5"><a href="{% url 'rozsireni_create' %}">Přidat rozšíření</a></p>
+            <p>Rozšíření k existující hře.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="card">
+          <div class="card-content">
+            <p class="title is-5"><a href="{% url 'zanr_create' %}">Přidat žánr</a></p>
+            <p>Tematické zařazení her.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="card">
+          <div class="card-content">
+            <p class="title is-5"><a href="{% url 'tvurci_create' %}">Přidat tvůrce</a></p>
+            <p>Designer, ilustrátor nebo jiný tvůrce.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-one-third">
+        <div class="card">
+          <div class="card-content">
+            <p class="title is-5"><a href="{% url 'vydavatelstvi_create' %}">Přidat vydavatelství</a></p>
+            <p>Nový vydavatel deskových her.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Rychlé odkazy pro všechny -->
+    <div class="box mt-6">
+      <h3 class="title is-4">Přehled databáze</h3>
+      <div class="columns is-multiline">
+        <div class="column is-one-third">
+          <div class="card">
+            <div class="card-content">
+              <p class="title is-5"><a href="{% url 'deskovka_list' %}">Deskové hry</a></p>
+              <p>Seznam všech základních her.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-one-third">
+          <div class="card">
+            <div class="card-content">
+              <p class="title is-5"><a href="{% url 'rozsireni_list' %}">Rozšíření</a></p>
+              <p>Přehled všech rozšíření her.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-one-third">
+          <div class="card">
+            <div class="card-content">
+              <p class="title is-5"><a href="{% url 'zanr_list' %}">Žánry</a></p>
+              <p>Různé herní žánry a kategorie.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-one-third">
+          <div class="card">
+            <div class="card-content">
+              <p class="title is-5"><a href="{% url 'tvurci_list' %}">Tvůrci</a></p>
+              <p>Designéři, ilustrátoři a další.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-one-third">
+          <div class="card">
+            <div class="card-content">
+              <p class="title is-5"><a href="{% url 'vydavatelstvi_list' %}">Vydavatelství</a></p>
+              <p>Firmy vydávající deskové hry.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}

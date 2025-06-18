@@ -56,11 +56,11 @@
               <div class="card-image">
                 <figure class="image is-4by3">
                   {% if rozs.fotografie %}
-                    <a href="{% url 'deskovka_detail' deskovka.pk %}">
+                    <a href="{% url 'rozsireni_detail' rozs.pk %}">
                     <img src="{{ rozs.fotografie.url }}" alt="{{ rozs.nazev }}">
                     </a>
                   {% else %}
-                  <a href="{% url 'deskovka_detail' deskovka.pk %}">
+                  <a href="{% url 'rozsireni_detail' rozs.pk %}">
                     <img src="{% static 'images/placeholder.png' %}" alt="Bez obrázku">
                   </a>
                     
@@ -68,14 +68,13 @@
                 </figure>
               </div>
               <div class="card-content">
+                <a href="{% url 'rozsireni_detail' rozs.pk %}">
                 <p class="title is-5">{{ rozs.nazev }}</p>
+                </a>
                 {% if rozs.deskovka %}
-                  <p class="subtitle is-6">K deskové hře: {{ rozs.deskovka.nazev }}</p>
+                  <p class="subtitle is-6">K deskové hře:<a href="{% url 'deskovka_detail' rozs.deskovka.pk %}">{{ rozs.deskovka.nazev }}</a></p>
                 {% endif %}
               </div>
-              <footer class="card-footer">
-                <a href="{% url 'rozsireni_detail' rozs.pk %}" class="card-footer-item">Zobrazit</a>
-              </footer>
             </div>
           </div>
         {% endfor %}

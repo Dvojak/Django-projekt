@@ -29,7 +29,7 @@
     <div class="navbar-end">
       {% if user.is_authenticated %}
         <div class="navbar-item">
-          Přihlášen: {{ user.username }}
+          Přihlášen: <a href="{% url 'dashboard' %}">{{ user.username }}</a> 
         </div>
         <a class="navbar-item" href="{% url 'logout' %}">Odhlásit</a>
       {% else %}
