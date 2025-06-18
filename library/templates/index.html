@@ -1,1 +1,88 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Domů{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h1 class="title is-3">Vítejte v databázi deskových her!</h1>
+
+    <!-- Deskovky -->
+    <h2 class="title is-4 mt-5">Deskové hry</h2>
+    {% if deskovky %}
+      <div class="columns is-multiline">
+        {% for deskovka in deskovky %}
+          <div class="column is-one-third">
+            <div class="card">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  {% if deskovka.fotografie %}
+                    <a href="{% url 'deskovka_detail' deskovka.pk %}">
+                    <img src="{{ deskovka.fotografie.url }}" alt="{{ deskovka.nazev }}">
+                    </a>
+                  {% else %}
+                    <a href="{% url 'deskovka_detail' deskovka.pk %}">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Bez obrázku">
+                    </a>
+                  {% endif %}
+                </figure>
+              </div>
+              <div class="card-content">
+                <a href="{% url 'deskovka_detail' deskovka.pk %}">
+                <p class="title is-5">{{ deskovka.nazev }}</p>
+
+                </a>
+                
+                {% if deskovka.alt %}
+                  <p class="subtitle is-6">({{ deskovka.alt }})</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Žádné deskové hry nebyly nalezeny.</p>
+    {% endif %}
+
+    <!-- Rozšíření -->
+    <h2 class="title is-4 mt-6">Rozšíření</h2>
+    {% if rozsireni %}
+      <div class="columns is-multiline">
+        {% for rozs in rozsireni %}
+          <div class="column is-one-third">
+            <div class="card">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  {% if rozs.fotografie %}
+                    <a href="{% url 'deskovka_detail' deskovka.pk %}">
+                    <img src="{{ rozs.fotografie.url }}" alt="{{ rozs.nazev }}">
+                    </a>
+                  {% else %}
+                  <a href="{% url 'deskovka_detail' deskovka.pk %}">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Bez obrázku">
+                  </a>
+                    
+                  {% endif %}
+                </figure>
+              </div>
+              <div class="card-content">
+                <p class="title is-5">{{ rozs.nazev }}</p>
+                {% if rozs.deskovka %}
+                  <p class="subtitle is-6">K deskové hře: {{ rozs.deskovka.nazev }}</p>
+                {% endif %}
+              </div>
+              <footer class="card-footer">
+                <a href="{% url 'rozsireni_detail' rozs.pk %}" class="card-footer-item">Zobrazit</a>
+              </footer>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Žádná rozšíření nebyla nalezena.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
