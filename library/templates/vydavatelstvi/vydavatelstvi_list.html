@@ -12,7 +12,7 @@
           <div class="column is-half">
             <div class="box">
               <h3 class="title is-5 has-text-primary">
-                <a href="{% url 'vydavatelstvi_detail' vyd.pk %}">{{ vyd.Jmeno }}</a>
+              {{ vyd.Jmeno }}
               </h3>
 
               {% with deskovky=vyd.deskovky.all %}
@@ -29,6 +29,21 @@
                 </ul>
               {% endif %}
               {% endwith %}
+              {% with rozsireni=vyd.rozsireni.all %}
+              {% if rozsireni %}
+                <p class="has-text-weight-semibold">Rozšíření:</p>
+                <ul>
+                  {% for rozs in rozsireni %}
+                    <li>
+                      <a href="{% url 'rozsireni_detail' rozs.pk %}" class="has-text-link">
+                        {{ rozs.nazev }}
+                      </a>
+                    </li>
+                   {% endfor %}
+                </ul>
+              {% endif %}
+              {% endwith %}
+                </ul>
             </div>
           </div>
         {% endfor %}
